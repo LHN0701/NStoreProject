@@ -1,0 +1,103 @@
+﻿@model MemberModel.Input.LoginInfo
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ul class="breadcrumb">
+    <li><a href="index.html">Home</a> <span class="divider">/</span></li>
+    <li class="active">Login</li>
+</ul>
+<h3> Login</h3>
+<hr class="soft" />
+
+<div class="row">
+    @if (ViewBag.SuccessMsg != null)
+    {
+
+        <div id="msgAlert" class="alert alert-success span7" role="alert">
+            @ViewBag.SuccessMsg
+        </div>
+
+    }
+    <div class="span4">
+        <div class="well">
+            <h5>YOU HAVE NOT REGISTER YET ?</h5><br /><br />
+            <form action="register.html">
+                <div class="controls">
+                    <a href="/Member/Register" class="btn block">Create Your Account</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="span1"> &nbsp;</div>
+    <div class="span4">
+        <div class="well">
+            <h5>YOU HAVE ALREADY REGISTERED !</h5>
+            <form asp-action="Login" asp-controller="Member" method="post">
+                <div class="control-group">
+                    <label class="control-label" for="inputEmail1">Email</label>
+                    <div class="controls">
+                        <input asp-for="UserName" class="span3" type="text" id="inputEmail1" placeholder="Email">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputPassword1">Password</label>
+                    <div class="controls">
+                        <input asp-for="Password" type="password" class="span3" id="inputPassword1" placeholder="Password">
+                    </div>
+                </div>
+                <div class="control-group">
+
+                    <fb:login-button scope="public_profile,email"
+                                     onlogin="facebookLogin();">
+                    </fb:login-button>
+                    <div class="controls">
+                        <button type="submit" class="btn">Sign in</button> <a asp-controller="Member" asp-action="ForgetPassword">Forget password?</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '1226073404881604',
+            cookie: true,
+            xfbml: true,
+            version: 'v14.0'
+        });
+
+        FB.AppEvents.logPageView();
+
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    function facebookLogin() {
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    function statusChangeCallback(response, login = true) {
+        if (response.status === "connected") {
+
+        } else {
+            if (login) {
+                FB.login(function (response) {
+                    statusChangeCallback(response);
+                }, { scope: 'puglic_profile, email' });
+            }
+        }
+    }
+</script>

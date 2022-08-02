@@ -1,0 +1,101 @@
+﻿@model SlideModel.Output.UpdateSlide
+
+@{
+    ViewData["Title"] = "Update Slide";
+    Layout = "~/Areas/Manage/Views/Shared/_LayoutBackend.cshtml";
+}
+
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+
+<style>
+    div#dialog-message p {
+        margin: 0;
+    }
+
+    .slide-info {
+        border: 1px solid;
+        box-shadow: 5px 6px #888888;
+        padding: 20px;
+        margin-top: 10%;
+    }
+
+        .slide-info .page-heading {
+            margin-top: 15px;
+        }
+</style>
+
+<div class="container-fluid">
+    <h1 class="mt-4">Update Slide</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Home Page</a></li>
+        <li class="breadcrumb-item active">Update Slide</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Slide">Return</a>
+        </div>
+
+        <div class="card-body">
+            <div class="col-md-8">
+                <form asp-action="UpdateSlide" enctype="multipart/form-data" method="post">
+                    <input asp-for="Id" type="hidden" class="form-control" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Url" class="control-label"></label>
+                        <input asp-for="Url" class="form-control" />
+                        <span asp-validation-for="Url" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label asp-for="ThumbnailImage" class="control-label"></label>
+                            <input asp-for="ThumbnailImage" id="picture" accept="image/*" type="file" class="form-control" />
+                            <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
+                            <div class="col-sm-7 col-md-9">
+                                <input asp-for="Id" type="hidden" />
+                                <a href="@("https://localhost:5001" + Model.Picture)" title="@Model.Name">
+                                    <img src="@("https://localhost:5001" + Model.Picture)" id="imgThumbnail" class="img-responsive" style="margin-top: 5px; width: 200px; height: auto;" />
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label asp-for="Active" class="control-label me-2"></label>
+                        <input asp-for="Active" type="checkbox" />
+                        <span asp-validation-for="Active" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="submit" value="Update" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    const inputFile = document.getElementById("picture");
+    const imgPreview = document.getElementById("imgThumbnail");
+    inputFile.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.addEventListener("load", function () {
+                imgPreview.setAttribute("src", this.result);
+                var res = this.result.split(";base64,");
+            });
+            reader.readAsDataURL(file);
+        } else {
+            imgPreview.setAttribute("src", "");
+        }
+    });
+</script>

@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "ConfirmEmail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header>
+    <h1 class="text-success">@ViewData["Title"]!</h1>
+    @if (ViewData["NotetiActive"].ToString() == "success")
+    {
+        <p class="text-success">Member registration information has been successfully confirmed.</p>
+        <p class="text-success">
+            Now you can
+            <strong><a asp-controller="Member" asp-action="Login">Login</a></strong>
+            to buy merchandise.
+        </p>
+    }
+    else
+    {
+        <p class="text-danger">Cannot verify the register information.</p>
+        <p class="text-danger">Please contact customer service for assistance.</p>
+    }
+</header>

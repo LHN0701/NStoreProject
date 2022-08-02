@@ -1,0 +1,107 @@
+﻿@model List<SlideModel.Output.SlideInfo>
+@{
+    ViewData["Title"] = "List Slide Banner";
+    Layout = "~/Areas/Manage/Views/Shared/_LayoutBackend.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">List Slide</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Home page</a></li>
+        <li class="breadcrumb-item active">List Slide</li>
+    </ol>
+
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-action="CreateSlide" asp-controller="Slide">Create</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+            </div>
+            <table class="table" id="">
+                <thead>
+                    <tr>
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            Hình
+                        </th>
+                        <th>
+                            Liên Kết
+                        </th>
+                        <th>
+                            Kích Hoạt
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @if (Model.Count > 0)
+                {
+                    var stt = 0;
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            stt++;
+                            <tr>
+                                <td data-title="STT"><span>@stt</span></td>
+                                <td data-title="Hình">
+                                    <span>
+                                        <div class="col-sm-7 col-md-9">
+                                            <input asp-for="@item.Id" type="hidden" />
+                                            <a href="@("https://localhost:5001" + item.Picture)" title="@item.Name">
+                                                <img src="@("https://localhost:5001" + item.Picture)" id="imgThumbnail" class="img-responsive" style="margin-top: 5px; width: 200px; height: auto;" />
+                                            </a>
+                                        </div>
+                                    </span>
+                                </td>
+                                <td data-title="Liên kết"><span>@item.Url</span></td>
+                                <td data-title="Kích hoạt"><span>@item.Active</span></td>
+                                <td data-title="">
+                                    <span>
+                                        <a asp-area="Manage" asp-controller="Slide" asp-action="UpdateSlide" asp-route-id="@item.Id" title="Cập nhật Slide Banner">
+                                            <i class="fa fa-bars" aria-hidden="true" style="font-size: 16px; margin-right: 20px"></i>
+                                        </a>
+                                    </span>
+                                    <span>
+                                        <a asp-area="Manage" asp-controller="Slide" asp-action="DeleteSlide" asp-route-id="@item.Id" onclick="return DeleteComfirm(event);" title="Xóa Slide Banner">
+                                            <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px;"></i>
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+                else
+                {
+                    <div style="font-size: 1em; color: #ff0000;">Chưa có Slide Banner</div>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function DeleteComfirm(event) {
+        if (!confirm("Are you delete this slide?")) {
+            event.preventDefault();
+            return false;
+        }
+    }
+    setTimeout(function () {
+        $('#msgAlert').fadeOut('slow');
+    }, 2000);
+</script>

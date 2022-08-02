@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\Picture\Products\1853bd86-7e9e-4082-93e3-e31a74a62649.jpg" />
+    <Content Remove="wwwroot\Picture\Products\4a4e9be0-1a2a-4a40-af7b-0f6e0771d80e.jpg" />
+    <Content Remove="wwwroot\Picture\Products\70e33f4d-b027-4ae7-918c-ed21930f43f2.jpg" />
+    <Content Remove="wwwroot\Picture\Products\74519b5c-796e-4388-8484-bae7ad49f577.jpg" />
+    <Content Remove="wwwroot\Picture\Products\d62c58a8-dea8-44a3-9bbe-b261371b653c.jpg" />
+    <Content Remove="wwwroot\Picture\Products\eb6f2dd9-8b1f-4723-a48f-91023e93b70e.jpg" />
+    <Content Remove="wwwroot\Picture\Products\ed070b38-390a-48ef-baf2-dbadca2cadb3.jpg" />
+    <Content Remove="wwwroot\Picture\Slides\img0.jpg" />
+    <Content Remove="wwwroot\Picture\Slides\img19.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Manage\Data\" />
+    <Folder Include="wwwroot\themes\less\oregional\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Picture\Products\1853bd86-7e9e-4082-93e3-e31a74a62649.jpg" />
+    <None Include="wwwroot\Picture\Products\4a4e9be0-1a2a-4a40-af7b-0f6e0771d80e.jpg" />
+    <None Include="wwwroot\Picture\Products\70e33f4d-b027-4ae7-918c-ed21930f43f2.jpg" />
+    <None Include="wwwroot\Picture\Products\74519b5c-796e-4388-8484-bae7ad49f577.jpg" />
+    <None Include="wwwroot\Picture\Products\d62c58a8-dea8-44a3-9bbe-b261371b653c.jpg" />
+    <None Include="wwwroot\Picture\Products\eb6f2dd9-8b1f-4723-a48f-91023e93b70e.jpg" />
+    <None Include="wwwroot\Picture\Products\ed070b38-390a-48ef-baf2-dbadca2cadb3.jpg" />
+    <None Include="wwwroot\Picture\Slides\img0.jpg" />
+    <None Include="wwwroot\Picture\Slides\img19.jpg" />
+  </ItemGroup>
+
+</Project>

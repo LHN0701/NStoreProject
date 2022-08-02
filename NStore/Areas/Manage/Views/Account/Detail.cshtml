@@ -1,0 +1,77 @@
+﻿@model UserModel.UserBase
+@{
+    ViewData["Title"] = "Detail user";
+    Layout = "~/Areas/Manage/Views/Shared/_LayoutBackend.cshtml";
+    var gt = "";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Detail user</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Home page</a></li>
+        <li class="breadcrumb-item active">Detail user</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Account">Return</a>
+        </div>
+        <div class="card-body">
+            <div class="col-md-12">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Id)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Id)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Gender)
+                    </dt>
+                    @{ if (Model.Gender)
+                        {
+                            gt = "Male";
+                        }
+                        else
+                        {
+                            gt = "Female";
+                        }
+                    }
+                    <dd class="col-sm-10">
+                        @gt
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Dob)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Model.Dob.ToString("dd/MM/yyyy")
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Address)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Address)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Identification)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Identification)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Role)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Role)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

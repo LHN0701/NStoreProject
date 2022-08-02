@@ -1,0 +1,110 @@
+﻿@model ProductModel.Output.UpdateProduct
+@{
+    ViewData["Title"] = "Edit Product";
+    Layout = "~/Areas/Manage/Views/Shared/_LayoutBackend.cshtml";
+}
+
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/ckeditor5/33.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#txt_details'), {
+                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+    </script>
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Edit product</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Home page</a></li>
+        <li class="breadcrumb-item active">Edit product</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Product">Return</a>
+        </div>
+        <div class="card-body">
+            <div class="col-md-8">
+                <form asp-action="Update" enctype="multipart/form-data" method="post">
+                    <input asp-for="Id" type="hidden" class="form-control" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OriginalPrice" class="control-label"></label>
+                        <input asp-for="OriginalPrice" class="form-control" />
+                        <span asp-validation-for="OriginalPrice" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Stock" class="control-label"></label>
+                        <input asp-for="Stock" class="form-control" />
+                        <span asp-validation-for="Stock" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ViewCount" class="control-label"></label>
+                        <input asp-for="ViewCount" class="form-control" />
+                        <span asp-validation-for="ViewCount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea asp-for="Description" rows="5" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Details" class="control-label"></label>
+                        <textarea id="txt_details" asp-for="Details" rows="35" class="form-control"></textarea>
+                        <span asp-validation-for="Details" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ThumbnailImage" class="control-label"></label>
+                        <input asp-for="ThumbnailImage" id="picture" accept="image/*" type="file" class="form-control" />
+                        <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
+                        <div class="col-sm-7 col-md-9">
+                            <input asp-for="Id" type="hidden" />
+                            <a href="@("https://localhost:5001" + Model.ImagePath)" title="@Model.Name">
+                                <img src="@("https://localhost:5001" + Model.ImagePath)" id="imgThumbnail" class="img-responsive" style="margin-top: 5px; width: 200px; height: auto;" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    const inputFile = document.getElementById("picture");
+    const imgPreview = document.getElementById("imgThumbnail");
+    inputFile.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.addEventListener("load", function () {
+                imgPreview.setAttribute("src", this.result);
+                var res = this.result.split(";base64,");
+            });
+            reader.readAsDataURL(file);
+        } else {
+            imgPreview.setAttribute("src", "");
+        }
+    });
+</script>

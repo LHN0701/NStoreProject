@@ -1,0 +1,130 @@
+﻿@model ProductModel.Output.PagedResult
+@{
+    ViewData["Title"] = "List Product";
+    Layout = "~/Areas/Manage/Views/Shared/_LayoutBackend.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">List product</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Home page</a></li>
+        <li class="breadcrumb-item active">List product</li>
+    </ol>
+
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-action="Create" asp-controller="Product">Create</a>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <select name="categoryId" onchange="this.form.submit()" asp-items="@ViewBag.Categories" class="form-control">
+                                    <option>--Select category--</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="button" onclick="window.location.href='/Manage/Product/Index'" class="btn btn-dark">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+            </div>
+            <table class="table" id="">
+                <thead>
+                    <tr>
+                        <th>
+                            Mã SP
+                        </th>
+                        <th>
+                            Ảnh
+                        </th>
+                        <th>
+                            Tên
+                        </th>
+                        <th>
+                            Giá Gốc
+                        </th>
+                        <th>
+                            Giá
+                        </th>
+                        <th>
+                            Số lượng tồn
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                <a href="@("https://localhost:5001" + item.ImagePath)" title="@item.Name">
+                                    <img src="@("https://localhost:5001" + item.ImagePath)" id="imgThumbnail" class="img-responsive" style="width: 200px; height: 150px;" />
+                                </a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OriginalPrice)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Stock)
+                            </td>
+
+                            <td>
+                                @Html.ActionLink("Update", "Update", new { productId = item.Id }) |
+                                @Html.ActionLink("Detail", "Detail", new { productId = item.Id }) |
+                                <span>
+                                    <a asp-area="Manage" asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" onclick="return DeleteComfirm(event);" title="Delete product">
+                                        Delete
+                                    </a>
+                                </span> |
+                                @Html.ActionLink("CategoryAssign", "CategoryAssignRequest", new { productId = item.Id }) |
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="control-panel">
+                <partial name="_PagingPartial" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function DeleteComfirm(event) {
+        if (!confirm("Are you delete this product?")) {
+            event.preventDefault();
+            return false;
+        }
+    }
+
+    setTimeout(function () {
+        $('#msgAlert').fadeOut('slow');
+    }, 2000);
+</script>

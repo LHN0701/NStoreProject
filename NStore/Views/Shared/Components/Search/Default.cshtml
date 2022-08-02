@@ -1,0 +1,27 @@
+﻿@model List<CategoryModel>
+@{
+    var categoryId = 0;
+    if (TempData["CategoryParentId"] != null)
+        categoryId = int.Parse(TempData["CategoryParentId"].ToString());
+}
+<form class="form-inline navbar-search" asp-controller="Product" asp-action="Index" method="post">
+
+    <input placeholder="Search..." type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" />
+    <select name="categoryId" class="form-control">
+
+        <option value="0">--All product--</option>
+
+        @foreach (var item in Model)
+        {
+            if (categoryId == item.Id)
+            {
+                <option value="@item.Id" selected>@item.Name</option>
+            }
+            else
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        }
+    </select>
+    <button type="submit" id="submitButton" class="btn btn-primary">Search</button>
+</form>
