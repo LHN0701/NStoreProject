@@ -92,6 +92,23 @@
     function statusChangeCallback(response, login = true) {
         if (response.status === "connected") {
 
+            FB.api('/me?fields=id,name,email,birthday', function (res) {
+                $.ajax({
+                    type: "GET",
+                    url: '/Member/LoginFB',
+                    data: {
+                        username: res.email,
+                        password: res.email
+                    },
+                    success: function (res) {
+                        console.log(res)
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
+            })
+
         } else {
             if (login) {
                 FB.login(function (response) {

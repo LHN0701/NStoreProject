@@ -31,6 +31,8 @@
     <style type="text/css" id="enject"></style>
 </head>
 <body>
+    <input type="hidden" id="hidBaseAddress" value="https://localhost:5001" />
+
     <div id="header">
         <div class="container">
             <div id="welcomeLine" class="row">
@@ -51,7 +53,7 @@
                         <a href="product_summary.html"><span>&pound;</span></a>
                         <span class="btn btn-mini">$155.00</span>
                         <a href="product_summary.html"><span class="">$</span></a>
-                        <a href="product_summary.html"><span class="btn btn-mini btn-primary"><i class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
+                        <a href="/Cart"><span class="btn btn-mini btn-primary"><i class="icon-shopping-cart icon-white"></i> [ <span class="lbl_number_items_header">0</span> ] Itemes in your cart </span> </a>
                     </div>
                 </div>
             </div>
@@ -98,7 +100,14 @@
         <div class="container">
             <div class="row">
                 <!-- Sidebar ================================================== -->
-                @await Component.InvokeAsync("SideBar")
+                <div id="sidebar" class="span3">
+                    <div class="well well-small">
+                        <a id="myCart" href="/Cart">
+                            <img src="/themes/images/ico-cart.png" alt="cart"><span class="lbl_number_items_header">0</span> Items in your cart  <span class="badge badge-warning pull-right">$155.00</span>
+                        </a>
+                    </div>
+                    @await Component.InvokeAsync("SideBar")
+                </div>
                 <!-- Sidebar end=============================================== -->
                 <div class="span9">
                     @RenderBody()
@@ -153,6 +162,10 @@
     <script src="/themes/js/jquery.lightbox-0.5.js"></script>
 
     <script src="/js/site.js"></script>
+    <script>
+        var cart = new SiteController();
+        cart.initialize();
+    </script>
 
     <!-- Themes switcher section ============================================================================================= -->
     <div id="secectionBox">
