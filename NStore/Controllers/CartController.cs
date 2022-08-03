@@ -96,6 +96,7 @@ namespace NStore.Controllers
         [HttpPost]
         public IActionResult CheckOut(CheckOutModel request)
         {
+            var memberId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "MemberId").Value);
             var model = GetCheckoutViewModel();
             var orderDetails = new List<OrderDetailModel>();
             foreach (var item in model.CartItems)
@@ -108,6 +109,7 @@ namespace NStore.Controllers
             }
             var checkoutRequest = new CheckOutRequest()
             {
+                UserId = memberId,
                 Address = request.CheckoutModel.Address,
                 Name = request.CheckoutModel.Name,
                 Email = request.CheckoutModel.Email,
@@ -115,7 +117,16 @@ namespace NStore.Controllers
                 OrderDetails = orderDetails
             };
             //TODO: Add to API
-            TempData["SuccessMsg"] = "Order puschased successful";
+
+            var result = Utilities.SendDataRequest<NotetiModel>(ConstantValues.Order.CreateOrder, checkoutRequest);
+
+            if (result.Issuccess == false)
+            {
+                ModelState.AddModelError("", result.Noteti);
+                return View();
+            }
+
+            TempData["SuccessMsg"] = result.Noteti;
             return View(model);
         }
 

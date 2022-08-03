@@ -46,6 +46,7 @@ namespace NStoreAPI
             services.AddScoped<ICategory, CategoryService>();
             services.AddScoped<IStorage, FileStorageService>();
             services.AddScoped<ISlide, SlideService>();
+            services.AddScoped<IOrder, OrderService>();
 
             services.AddControllers();
             services.AddMemoryCache();

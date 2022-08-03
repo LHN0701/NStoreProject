@@ -5,6 +5,55 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    /*#oneline {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #twoline {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        #imageParent {
+            width: 200px;
+            height: 300px;
+        }
+
+        .user {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .user__name {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .user__meta {
+            min-width: 0;
+        }*/
+    .thumbnail img {
+        object-fit: contain;
+        height: 160px;
+    }
+
+    .thumbnail .caption h5 {
+        height: 40px;
+        overflow: hidden;
+    }
+
+    .thumbnail .caption .user__name {
+        height: 100px;
+        overflow: hidden;
+    }
+</style>
+
 <ul class="breadcrumb">
     <li><a href="index.html">Home</a> <span class="divider">/</span></li>
     <li class="active">Products Name</li>
@@ -79,7 +128,7 @@
                         <a href="@("/Product/Detail?productId=" + item.Id)"><img src="@("https://localhost:5001" + item.ImagePath)" alt="@item.Name" /></a>
                         <div class="caption">
                             <h5>@item.Name</h5>
-                            <p>
+                            <p class="user__name">
                                 @item.Description
                             </p>
                             <h4 style="text-align:center">
