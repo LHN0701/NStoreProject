@@ -21,6 +21,7 @@ namespace Service.Models
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Member> Members { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductImage> ProductImages { get; set; }
         public virtual DbSet<ProductInCategory> ProductInCategories { get; set; }
@@ -64,7 +65,7 @@ namespace Service.Models
 
             modelBuilder.Entity<Member>(entity =>
             {
-                entity.Property(e => e.Address).IsRequired();
+                entity.Property(e => e.Active).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Dob).HasColumnType("datetime");
 
@@ -73,9 +74,9 @@ namespace Service.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.Gender).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Name).HasMaxLength(100);
 
                 entity.Property(e => e.Password)
                     .IsRequired()
@@ -83,7 +84,6 @@ namespace Service.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Phone)
-                    .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false);
             });
@@ -91,8 +91,6 @@ namespace Service.Models
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.Property(e => e.OrderDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.ShipAddress)
                     .IsRequired()
@@ -111,17 +109,30 @@ namespace Service.Models
                     .IsRequired()
                     .HasMaxLength(200);
 
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Orders_Products");
-
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Orders_Users");
+            });
+
+            modelBuilder.Entity<OrderDetail>(entity =>
+            {
+                entity.HasKey(e => new { e.OrderId, e.ProductId });
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderDetails_Orders");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderDetails_Products");
             });
 
             modelBuilder.Entity<Product>(entity =>

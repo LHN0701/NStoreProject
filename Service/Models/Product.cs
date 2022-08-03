@@ -9,7 +9,7 @@ namespace Service.Models
     {
         public Product()
         {
-            Orders = new HashSet<Order>();
+            OrderDetails = new HashSet<OrderDetail>();
             ProductImages = new HashSet<ProductImage>();
             ProductInCategories = new HashSet<ProductInCategory>();
         }
@@ -24,7 +24,7 @@ namespace Service.Models
         public string Description { get; set; }
         public string Details { get; set; }
 
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<ProductImage> ProductImages { get; set; }
         public virtual ICollection<ProductInCategory> ProductInCategories { get; set; }
     }

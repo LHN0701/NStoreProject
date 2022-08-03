@@ -57,5 +57,10 @@ namespace NStore.Common
             public const string SlideInfo = "api/Slide/Detail";
             public const string DeleteSlide = "api/Slide/DeleteSlide";
         }
+
+        public class Order
+        {
+            public const string CreateOrder = "api/Orders/CreateOrder";
+        }
     }
 }

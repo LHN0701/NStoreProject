@@ -15,46 +15,51 @@
 <hr class="soft" />
 @if (TempData["SuccessMsg"] != null)
 {
-    <span class="alert alert-success">@TempData["SuccessMsg"]</span> }
+    <span class="alert alert-success">@TempData["SuccessMsg"]</span>
+}
 else
 {
+    <form class="form-horizontal" action="/Cart/Checkout" method="post">
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Description</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.CartItems)
-            {
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td> <img width="60" src="@("https://localhost:5001" + item.Image)" alt="" /></td>
-                    <td>@item.Description</td>
-                    <td>
-                        @item.Quantity
-                    </td>
-                    <td>@item.Price</td>
-                    <td>@(item.Quantity*item.Price)</td>
+                    <th>Product</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
                 </tr>
-            }
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.CartItems.Count; i++)
+                {
+                    <input type="hidden" id="inputCountry" asp-for="@Model.CartItems[i].Quantity" placeholder="Name">
+                    <input type="hidden" id="inputCountry" asp-for="@Model.CartItems[i].ProductId" placeholder="Name">
 
+                    var item = Model.CartItems[i];
+                    <tr>
+                        <td> <img width="60" src="@("https://localhost:5001" + item.Image)" alt="" /></td>
+                        <td>@item.Description</td>
+                        <td>
+                            @item.Quantity
+                        </td>
+                        <td>@item.Price</td>
+                        <td>@(item.Quantity * item.Price)</td>
+                    </tr>
+                }
+
+                <tr>
+                    <td colspan="4" style="text-align:right"><strong>TOTAL =</strong></td>
+                    <td class="label label-important" style="display:block"> <strong> @Model.CartItems.Sum(x => x.Quantity * x.Price).ToString("N0")</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <tr><th>ESTIMATE YOUR SHIPPING </th></tr>
             <tr>
-                <td colspan="4" style="text-align:right"><strong>TOTAL =</strong></td>
-                <td class="label label-important" style="display:block"> <strong> @Model.CartItems.Sum(x => x.Quantity * x.Price).ToString("N0")</strong></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <table class="table table-bordered">
-        <tr><th>ESTIMATE YOUR SHIPPING </th></tr>
-        <tr>
-            <td>
-                <form class="form-horizontal" action="/Cart/Checkout" method="post">
+                <td>
                     <div class="control-group">
                         <label class="control-label" for="inputCountry">Name </label>
                         <div class="controls">
@@ -82,13 +87,16 @@ else
                         </div>
                     </div>
 
+                    <div asp-validation-summary="All" class="text-error"></div>
+
                     <div class="control-group">
                         <div class="controls">
                             <button type="submit" class="btn">Purchase </button>
                         </div>
                     </div>
-                </form>
-            </td>
-        </tr>
-    </table>
-    <a href="/Cart/Index" class="btn btn-large"><i class="icon-arrow-left"></i> Return </a>}
+                </td>
+            </tr>
+        </table>
+        <a href="/Cart/Index" class="btn btn-large"><i class="icon-arrow-left"></i> Return </a>}
+    </form>
+}
