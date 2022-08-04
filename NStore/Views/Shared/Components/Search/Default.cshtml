@@ -4,7 +4,7 @@
     if (TempData["CategoryParentId"] != null)
         categoryId = int.Parse(TempData["CategoryParentId"].ToString());
 }
-<form class="form-inline navbar-search" asp-controller="Product" asp-action="Index" method="post">
+<form class="form-inline navbar-search" asp-controller="Product" asp-action="Index" method="get">
 
     <input placeholder="Search..." type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" />
     <select name="categoryId" class="form-control">

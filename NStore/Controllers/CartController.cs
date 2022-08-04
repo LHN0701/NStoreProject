@@ -30,7 +30,7 @@ namespace NStore.Controllers
             return Ok(currentCart);
         }
 
-        public IActionResult AddToCart(int id)
+        public IActionResult AddToCart(int id, int? qty)
         {
             var product = Utilities.SendDataRequest<ProductModel.ProductBase>(ConstantValues.Product.Detail + $"/{id}", id);
             var session = HttpContext.Session.GetString("CartItem");
@@ -40,11 +40,16 @@ namespace NStore.Controllers
                 currentCart = JsonConvert.DeserializeObject<List<CartItemModel>>(session);
             }
 
-            var quantity = 1;
+            var quantity = qty == null ? 1 : qty;
 
-            if (currentCart.Any(x => x.ProductId == id))
+            if (currentCart.Any(x => x.ProductId == id) && qty == null)
             {
                 quantity = currentCart.First(x => x.ProductId == id).Quantity + 1;
+                currentCart.Remove(currentCart.First(x => x.ProductId == id));
+            }
+            else if (currentCart.Any(x => x.ProductId == id) && qty != null)
+            {
+                quantity += currentCart.First(x => x.ProductId == id).Quantity;
                 currentCart.Remove(currentCart.First(x => x.ProductId == id));
             }
             var cartItem = new CartItemModel()
@@ -53,13 +58,16 @@ namespace NStore.Controllers
                 Name = product.Name,
                 Description = product.Description,
                 Image = product.ImagePath,
-                Quantity = quantity,
+                Quantity = quantity.GetValueOrDefault(),
                 Price = product.Price
             };
 
             currentCart.Add(cartItem);
 
             HttpContext.Session.SetString("CartItem", JsonConvert.SerializeObject(currentCart));
+
+            if (qty != null)
+                return RedirectToAction("index");
 
             return Ok(currentCart);
         }

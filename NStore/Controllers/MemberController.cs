@@ -68,7 +68,8 @@ namespace NStore.Controllers
             //var input = new UserModel.Input.LoginInfo { UserName = user.Email, Password = user.Password };
             var input = User.Claims.FirstOrDefault(x => x.Type == "NAME").Value;
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.Session.Clear();
+            HttpContext.Session.Remove("Member");
+            //HttpContext.Session.Clear();
             Utilities.SendDataRequest<bool>(ConstantValues.Member.Logout, input);
             return RedirectToAction("Index", "Home");
         }

@@ -15,7 +15,9 @@
                     <ul>
                         @foreach (var item in children)
                         {
-                            <li><a class="active" href="@("/Product/Category/" + item.Id)"><i class="icon-chevron-right"></i>@item.Name </a></li>
+                            <li><a class="active" href="@("/Product?categoryId=" + item.Id)"><i class="icon-chevron-right"></i>@item.Name </a></li>
+                            @*<li><a class="active" href="@("/Product/Category/" + item.Id)"><i class="icon-chevron-right"></i>@item.Name </a></li>*@
+
                         }
                     </ul>
                 }
@@ -24,7 +26,8 @@
                     <ul style="display:none">
                         @foreach (var item in children)
                         {
-                            <li><a class="active" href="@("/Product/Category/" + item.Id)"><i class="icon-chevron-right"></i>@item.Name </a></li>
+                            <li><a class="active" href="@("/Product?categoryId=" + item.Id)"><i class="icon-chevron-right"></i>@item.Name </a></li>
+                            @*<li><a class="active" href="@("/Product/Category/" + item.Id)"><i class="icon-chevron-right"></i>@item.Name </a></li>*@
                         }
                     </ul>
                 }

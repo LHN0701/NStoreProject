@@ -27,7 +27,6 @@
     }
 
     function updateCart(id, quantity) {
-        const culture = $('#hidCulture').val();
         $.ajax({
             type: "POST",
             url: '/Cart/UpdateCart',
@@ -37,11 +36,14 @@
             },
             success: function (res) {
                 var numberItem = 0;
+                var priceItem = 0;
 
                 $.each(res, function (i, item) {
                     numberItem += item.quantity;
+                    priceItem += item.quantity * item.price
                 });
                 $('.lbl_number_items_header').text(numberItem);
+                $('.lbl_price_items_header').text("$" + priceItem);
 
                 loadData();
             },

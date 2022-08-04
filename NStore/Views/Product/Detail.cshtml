@@ -5,8 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{ ViewData["Title"] = "Detail";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+@section scripts{
+    <script src="/js/site.js"></script>
+    <script>
+        var cart = new SiteController();
+        cart.initialize();
+    </script>
 }
 
 <ul class="breadcrumb">
@@ -52,11 +56,13 @@
     <div class="span6">
         <h3>@Model.Name</h3>
         <hr class="soft" />
-        <form class="form-horizontal qtyFrm">
+        <form class="form-horizontal qtyFrm" asp-controller="Cart" asp-action="AddToCart" method="get">
             <div class="control-group">
                 <label class="control-label"><span>$ @Model.Price</span></label>
                 <div class="controls">
-                    <input type="number" class="span1" placeholder="Qty." />
+                    <input type="hidden" name="id" value="@Model.Id" class="span1" placeholder="Qty." />
+
+                    <input type="number" name="qty" class="span1" placeholder="Qty." />
                     <button type="submit" class="btn btn-large btn-primary pull-right"> <localize>Add to</localize> <i class=" icon-shopping-cart"></i></button>
                 </div>
             </div>
