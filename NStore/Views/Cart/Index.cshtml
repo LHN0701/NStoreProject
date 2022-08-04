@@ -4,11 +4,13 @@
 }
 
 @section scripts{
-    <script src="~/js/cart.js"></script>
+
+    <script src="/js/cart.js"></script>
     <script>
-        var cartController = new CartController();
-        cartController.initialize();
+        var cart = new CartController();
+        cart.initialize();
     </script>
+
 }
 
 <ul class="breadcrumb">

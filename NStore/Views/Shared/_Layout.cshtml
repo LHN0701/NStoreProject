@@ -47,12 +47,8 @@
                 }
                 <div class="span6">
                     <div class="pull-right">
-                        <a href="product_summary.html"><span class="">Fr</span></a>
-                        <a href="product_summary.html"><span class="">Es</span></a>
-                        <span class="btn btn-mini">En</span>
-                        <a href="product_summary.html"><span>&pound;</span></a>
-                        <span class="btn btn-mini">$155.00</span>
-                        <a href="product_summary.html"><span class="">$</span></a>
+
+                        <span class="btn btn-mini lbl_price_items_header">$0</span>
                         <a href="/Cart"><span class="btn btn-mini btn-primary"><i class="icon-shopping-cart icon-white"></i> [ <span class="lbl_number_items_header">0</span> ] Itemes in your cart </span> </a>
                     </div>
                 </div>
@@ -65,7 +61,7 @@
                     <span class="icon-bar"></span>
                 </a>
                 <div class="navbar-inner">
-                    <a class="brand" href="index.html"><img src="/themes/images/logo.png" alt="Bootsshop" /></a>
+                    <a class="brand" href="/"><img src="/themes/images/logo.png" alt="Bootsshop" /></a>
 
                     @await Component.InvokeAsync("Search")
 
@@ -103,7 +99,7 @@
                 <div id="sidebar" class="span3">
                     <div class="well well-small">
                         <a id="myCart" href="/Cart">
-                            <img src="/themes/images/ico-cart.png" alt="cart"><span class="lbl_number_items_header">0</span> Items in your cart  <span class="badge badge-warning pull-right">$155.00</span>
+                            <img src="/themes/images/ico-cart.png" alt="cart"><span class="lbl_number_items_header">0</span> Items in your cart  <span class="badge badge-warning pull-right lbl_price_items_header">$0</span>
                         </a>
                     </div>
                     @await Component.InvokeAsync("SideBar")

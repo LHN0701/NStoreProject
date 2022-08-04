@@ -4,6 +4,13 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section scripts{
+    <script src="/js/site.js"></script>
+    <script>
+        var cart = new SiteController();
+        cart.initialize();
+    </script>
+}
 
 <style>
     /*#oneline {
@@ -55,29 +62,29 @@
 </style>
 
 <ul class="breadcrumb">
-    <li><a href="index.html">Home</a> <span class="divider">/</span></li>
+    <li><a href="/Home/Index">Home</a> <span class="divider">/</span></li>
     <li class="active">Products Name</li>
 </ul>
 @if (Model.Category != null)
 {
-    <h3> @Model.Category.Name <small class="pull-right"> 40 <localize>available products</localize> </small></h3>
+    <h3> @Model.Category.Name @*<small class="pull-right"> 40 <localize>available products</localize> </small>*@</h3>
 }
 <hr class="soft" />
 <p>
     Mô tả của ứng dụng (hard)
 </p>
 <hr class="soft" />
-<form class="form-horizontal span6">
-    <div class="control-group">
-        <label class="control-label alignL"><localize>Sort By</localize> </label>
-        <select>
-            <option>Priduct name A - Z</option>
-            <option>Priduct name Z - A</option>
-            <option>Priduct Stoke</option>
-            <option>Price Lowest first</option>
-        </select>
-    </div>
-</form>
+@*<form class="form-horizontal span6">
+        <div class="control-group">
+            <label class="control-label alignL"><localize>Sort By</localize> </label>
+            <select>
+                <option>Priduct name A - Z</option>
+                <option>Priduct name Z - A</option>
+                <option>Priduct Stoke</option>
+                <option>Price Lowest first</option>
+            </select>
+        </div>
+    </form>*@
 
 <div id="myTab" class="pull-right">
     <a href="#listView" data-toggle="tab"><span class="btn btn-large"><i class="icon-list"></i></span></a>
@@ -110,7 +117,7 @@
                             <input type="checkbox">  Adds product to compair
                         </label><br />
 
-                        <a href="product_details.html" class="btn btn-large btn-primary"> <localize>Add to</localize> <i class=" icon-shopping-cart"></i></a>
+                        <a href="product_details.html" class="btn btn-large btn-primary btn-add-cart" data-id="@item.Id"> <localize>Add to</localize> <i class=" icon-shopping-cart"></i></a>
                         <a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
                     </form>
                 </div>
@@ -133,7 +140,7 @@
                             </p>
                             <h4 style="text-align:center">
                                 <a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a>
-                                <a class="btn" href="#"><localize>Add to</localize> <i class="icon-shopping-cart"></i></a>
+                                <a class="btn btn-add-cart" data-id="@item.Id" href="#"><localize>Add to</localize> <i class="icon-shopping-cart"></i></a>
                                 <a class="btn btn-primary" href="#">$ @item.Price.ToString()</a>
                             </h4>
                         </div>

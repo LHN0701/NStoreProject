@@ -70,14 +70,14 @@ namespace NStore
             app.UseRequestLocalization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                  name: "Product Index",
-                  pattern: "/Product/Category/{categoryId}",
-                  defaults: new
-                  {
-                      controller = "Product",
-                      action = "Index"
-                  });
+                //endpoints.MapControllerRoute(
+                //  name: "Product Index",
+                //  pattern: "/Product/Category/{categoryId}",
+                //  defaults: new
+                //  {
+                //      controller = "Product",
+                //      action = "Index"
+                //  });
                 endpoints.MapAreaControllerRoute(
                     name: "MyAreaManage",
                     areaName: "Manage",
