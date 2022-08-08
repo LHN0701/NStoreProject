@@ -10,6 +10,8 @@ namespace Service.Interfaces
 {
     public interface IMember
     {
+        Member AnonymousLogin(MemberModel.Input.AnonymousLogin input);
+
         Member Login(string UserName, string Password);
 
         MemberModel.Output.MemberInfo Register(MemberModel.Input.Register input);
@@ -17,5 +19,7 @@ namespace Service.Interfaces
         NotetiModel ConfirmEmail(string email);
 
         NotetiModel CheckEmail(string email);
+
+        NotetiModel ChangePassword(MemberModel.Input.ChangePassword input);
     }
 }

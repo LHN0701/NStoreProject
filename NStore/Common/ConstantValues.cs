@@ -44,11 +44,14 @@ namespace NStore.Common
 
         public class Member
         {
+            public const string AnonymousLogin = "api/Member/AnonymousLogin";
+
             public const string Login = "api/Member/Login";
             public const string Logout = "api/Member/Logout";
             public const string Register = "api/Member/Register";
             public const string ConfirmEmail = "api/Member/ConfirmEmail";
             public const string CheckEmail = "api/Member/CheckEmail";
+            public const string ChangePassword = "api/Member/ChangePassword";
         }
 
         public class Slide

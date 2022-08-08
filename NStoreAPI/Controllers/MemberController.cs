@@ -28,6 +28,30 @@ namespace NStoreAPI.Controllers
             _jwtAuthManager = jwtAuthManager;
         }
 
+        [HttpPost("AnonymousLogin")]
+        public IActionResult AnonymousLogin(MemberModel.Input.AnonymousLogin input)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var member = _iMember.AnonymousLogin(input);
+
+            MemberModel.Output.MemberInfo memberinfo = new();
+            if (member != null)
+            {
+                Utilities.PropertyCopier<Member, MemberModel.Output.MemberInfo>.Copy(member, memberinfo);
+                var memberInfo = new UserInfo
+                {
+                    Id = member.Id,
+                    Name = member.Name,
+                    Username = member.Email,
+                    UserAgent = HttpContext.Request.Headers["User-Agent"].ToString()
+                };
+                memberinfo.AccessToken = _jwtAuthManager.CreateToken(memberInfo);
+            }
+            return Ok(memberinfo);
+        }
+
         [HttpPost("Login")]
         public MemberModel.Output.MemberInfo Login(MemberModel.Input.LoginInfo input)
         {
@@ -96,6 +120,17 @@ namespace NStoreAPI.Controllers
                 return BadRequest(ModelState);
 
             var result = _iMember.ConfirmEmail(input.Email);
+
+            return Ok(result);
+        }
+
+        [HttpPost("ChangePassword")]
+        public IActionResult ChangePassword(MemberModel.Input.ChangePassword input)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = _iMember.ChangePassword(input);
 
             return Ok(result);
         }

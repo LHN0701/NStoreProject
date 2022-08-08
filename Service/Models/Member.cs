@@ -23,6 +23,7 @@ namespace Service.Models
         public bool? Active { get; set; }
         public string Password { get; set; }
         public string Address { get; set; }
+        public string AccountFrom { get; set; }
 
         public virtual ICollection<Cart> Carts { get; set; }
         public virtual ICollection<Order> Orders { get; set; }

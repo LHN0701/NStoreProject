@@ -25,6 +25,7 @@ namespace Service.Models
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductImage> ProductImages { get; set; }
         public virtual DbSet<ProductInCategory> ProductInCategories { get; set; }
+        public virtual DbSet<Promotion> Promotions { get; set; }
         public virtual DbSet<Slide> Slides { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<User> Users { get; set; }
@@ -65,6 +66,10 @@ namespace Service.Models
 
             modelBuilder.Entity<Member>(entity =>
             {
+                entity.Property(e => e.AccountFrom)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Active).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Dob).HasColumnType("datetime");
@@ -180,6 +185,15 @@ namespace Service.Models
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ProductInCategory_Products");
+            });
+
+            modelBuilder.Entity<Promotion>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.DiscountAmount).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Name).IsRequired();
             });
 
             modelBuilder.Entity<Slide>(entity =>

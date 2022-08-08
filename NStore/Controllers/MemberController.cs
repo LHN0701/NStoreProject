@@ -74,6 +74,32 @@ namespace NStore.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        public IActionResult AnonymousLogin(MemberModel.Input.AnonymousLogin request)
+        {
+            var input = new MemberModel.Input.AnonymousLogin()
+            {
+                Email = request.Email,
+                Name = request.Name,
+                AccountFrom = request.AccountFrom
+            };
+            var anonumousLogin = Utilities.SendDataRequest<MemberModel.Output.MemberInfo>(ConstantValues.Member.AnonymousLogin, input);
+
+            bool logined = LoginUser(anonumousLogin, false);
+            if (logined)
+                HttpContext.Session.Set<MemberModel.Output.MemberInfo>("Member", anonumousLogin);
+
+            //var message = @"<div style='margin:4px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#444;line-height:18px;font-weight:normal'>Hi <b>" + request.Name + "</b>,<br/><br/></div>" +
+            //            "<div>Thank you for registering as a member at NStore.<br/><br/> </div>" +
+            //            "<div>Your account:<br/><br/> </div>" +
+            //            "<div>UserName: " + anonumousLogin.Email + ".<br/><br/> </div>" +
+            //            "<div>Password: " + anonumousLogin.Password + ".<br/><br/> </div>";
+
+            //var sendMail = Utilities.SendMail("Confirm register member", message, request.Email);
+
+            return Ok();
+        }
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -116,19 +142,47 @@ namespace NStore.Controllers
         [HttpGet]
         public IActionResult ForgetPassword()
         {
-            var model = new MemberModel.Input.ForgetPassword();
+            var model = new MemberModel.Input.ConfirmEmail();
             return View(model);
         }
 
+        [HttpPost]
+        public IActionResult ForgetPassword(MemberModel.Input.ConfirmEmail input)
+        {
+            if (!ModelState.IsValid)
+                return View(input);
+            var result = Utilities.SendDataRequest<NotetiModel>(ConstantValues.Member.CheckEmail, input);
+            if (result.Issuccess == false)
+            {
+                ModelState.AddModelError("", result.Noteti);
+                return View();
+            }
+
+            return RedirectToAction("ChangePassword", input);
+        }
+
         [HttpGet]
-        public IActionResult ChangePassword(MemberModel.Input.ForgetPassword input)
+        public IActionResult ChangePassword(MemberModel.Input.ConfirmEmail input)
+        {
+            var model = new MemberModel.Input.ChangePassword();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult ChangePassword(MemberModel.Input.ChangePassword input)
         {
             if (!ModelState.IsValid)
                 return View(input);
 
-            var model = new NotetiModel();
+            var changePassword = new MemberModel.Input.ChangePassword()
+            {
+                Email = input.Email,
+                OldPassword = input.OldPassword,
+                NewPassword = input.NewPassword
+            };
 
-            var result = Utilities.SendDataRequest<NotetiModel>(ConstantValues.Member.CheckEmail, input);
+            var result = Utilities.SendDataRequest<NotetiModel>(ConstantValues.Member.ChangePassword, changePassword);
 
             if (result.Issuccess == false)
             {
@@ -136,22 +190,24 @@ namespace NStore.Controllers
                 return View();
             }
 
-            var code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(input.Email));
-            //Tạo link xác nhận kích hoạt tài khoản thành viên
-            var callbackUrl = Url.ActionLink("ConfirmEmail", "Member",
-                                            new { area = "", code = code }, Request.Scheme);
-            //Tạo nội dung Email
-            var message = @"<div style='margin:4px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#444;line-height:18px;font-weight:normal'>Hi <b>""</b>,<br/><br/></div>" +
-                        "<div>Thank you for registering as a member at NStore.<br/><br/> </div>" +
-                        "<div>To complete the registration, please <b><a style='text-decoration: none;' href='" + callbackUrl + "'><span style='background-color: #ff6600 !important; color: #ffffff; padding: 5px 10px; border-radius: 3px;'>Click here</span></a></b><br/><br/></div>";
-            var sendMail = Utilities.SendMail("Confirm register member", message, input.Email);
-
-            if (sendMail == true)
-            {
-                TempData["result"] = "You must active your account, please check your email";
-                return RedirectToAction("Login", "Member");
-            }
+            ViewData["Noteti"] = result.Noteti;
             return View();
+
+            //var code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(input.Email));
+            ////Tạo link xác nhận kích hoạt tài khoản thành viên
+            //var callbackUrl = Url.ActionLink("ConfirmEmail", "Member",
+            //                                new { area = "", code = code }, Request.Scheme);
+            ////Tạo nội dung Email
+            //var message = @"<div style='margin:4px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#444;line-height:18px;font-weight:normal'>Hi <b>""</b>,<br/><br/></div>" +
+            //            "<div>Thank you for registering as a member at NStore.<br/><br/> </div>" +
+            //            "<div>To complete the registration, please <b><a style='text-decoration: none;' href='" + callbackUrl + "'><span style='background-color: #ff6600 !important; color: #ffffff; padding: 5px 10px; border-radius: 3px;'>Click here</span></a></b><br/><br/></div>";
+            //var sendMail = Utilities.SendMail("Confirm register member", message, input.Email);
+
+            //if (sendMail == true)
+            //{
+            //    TempData["result"] = "You must active your account, please check your email";
+            //    return RedirectToAction("Login", "Member");
+            //}
         }
 
         public IActionResult ConfirmEmail(string code)
@@ -167,6 +223,11 @@ namespace NStore.Controllers
             {
                 ViewData["NotetiActive"] = "fail";
             }
+            return View();
+        }
+
+        public IActionResult CheckInfo()
+        {
             return View();
         }
 
