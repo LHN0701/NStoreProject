@@ -32,7 +32,7 @@ namespace NStore.Common
                                                                             MediaTypeNames.Text.Html));
 
                 var smtpClient = new SmtpClient("smtp.gmail.com", 587);
-                var credentials = new System.Net.NetworkCredential("lyhoangnam0701@gmail.com", "izqepyqtsfonrkvp");
+                var credentials = new System.Net.NetworkCredential("lyhoangnam0701@gmail.com", "smgaapibeyluxokv");
                 smtpClient.UseDefaultCredentials = false;
                 smtpClient.Credentials = credentials;
                 smtpClient.EnableSsl = true;

@@ -32,6 +32,16 @@ namespace NStore.Controllers
             return View(data);
         }
 
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        public IActionResult Delivery()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

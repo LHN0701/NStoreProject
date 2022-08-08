@@ -38,12 +38,14 @@ namespace Service.ViewModels
                 public int Id { get; set; }
             }
 
-            public class ThongTinThayDoiMatKhau
+            public class ChangePassword
             {
-                public int Id { get; set; }
-                public string Username { get; set; }
-                public string MatKhauCu { get; set; }
-                public string MatKhauMoi { get; set; }
+                public string Email { get; set; }
+                public string OldPassword { get; set; }
+
+                public string NewPassword { get; set; }
+
+                public string EnterNewPassword { get; set; }
             }
 
             public class LoginInfo
@@ -58,6 +60,14 @@ namespace Service.ViewModels
             public class ConfirmEmail
             {
                 public string Email { get; set; }
+            }
+
+            public class AnonymousLogin
+            {
+                public string Name { get; set; }
+
+                public string Email { get; set; }
+                public string AccountFrom { get; set; }
             }
         }
 

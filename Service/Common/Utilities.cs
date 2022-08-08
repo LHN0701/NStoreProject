@@ -33,5 +33,19 @@ namespace Service.Common
                 }
             }
         }
+
+        public static string RandomPassword()
+        {
+            string[] _password = new string[6];
+            string charSet = "abcdefghijklmnopqursuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+            System.Random _random = new Random();
+            int counter;
+
+            for (counter = 0; counter < 6; counter++)
+            {
+                _password[counter] = charSet[_random.Next(charSet.Length - 1)].ToString();
+            }
+            return string.Join("", _password);
+        }
     }
 }

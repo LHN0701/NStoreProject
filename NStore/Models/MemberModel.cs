@@ -51,21 +51,25 @@ namespace NStore.Models
             {
             }
 
-            public class ForgetPassword
+            public class ChangePassword
             {
-                [Required(ErrorMessage = "Email phải khác rỗng")]
-                [Display(Name = "Email")]
-                [DataType(DataType.EmailAddress)]
-                [EmailAddress(ErrorMessage = "Email không đúng định dạng")]
                 public string Email { get; set; }
-            }
 
-            public class ThongTinThayDoiMatKhau
-            {
-                public int Id { get; set; }
-                public string Username { get; set; }
-                public string MatKhauCu { get; set; }
-                public string MatKhauMoi { get; set; }
+                [Required(ErrorMessage = "Mật khẩu cũ phải khác rỗng.")]
+                [Display(Name = "Mật khẩu cũ")]
+                [DataType(DataType.Password)]
+                public string OldPassword { get; set; }
+
+                [Required(ErrorMessage = "Mật khẩu mới phải khác rỗng.")]
+                [Display(Name = "Mật khẩu mới")]
+                [DataType(DataType.Password)]
+                public string NewPassword { get; set; }
+
+                [Required(ErrorMessage = "Nhập lại Mật khẩu mới phải khác rỗng.")]
+                [Display(Name = "Nhập lại Mật khẩu mới")]
+                [DataType(DataType.Password)]
+                [Compare("NewPassword", ErrorMessage = "Nhập lại Mật khẩu mới không chính xác.")]
+                public string EnterNewPassword { get; set; }
             }
 
             public class LoginInfo
@@ -85,7 +89,19 @@ namespace NStore.Models
 
             public class ConfirmEmail
             {
+                [Required(ErrorMessage = "Email phải khác rỗng")]
+                [Display(Name = "Email")]
+                [DataType(DataType.EmailAddress)]
+                [EmailAddress(ErrorMessage = "Email không đúng định dạng")]
                 public string Email { get; set; }
+            }
+
+            public class AnonymousLogin
+            {
+                public string Name { get; set; }
+
+                public string Email { get; set; }
+                public string AccountFrom { get; set; }
             }
         }
 

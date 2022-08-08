@@ -1,4 +1,5 @@
-﻿using Service.Interfaces;
+﻿using Service.Common;
+using Service.Interfaces;
 using Service.Models;
 using Service.ViewModels;
 using System;
@@ -52,7 +53,8 @@ namespace Service.Services
                 Phone = input.Phone,
                 Gender = input.Gender,
                 Password = input.Password,
-                Address = input.Address
+                Address = input.Address,
+                AccountFrom = "Store"
             };
 
             if (user != null)
@@ -102,6 +104,68 @@ namespace Service.Services
             noteti.IsSuccess = true;
 
             return noteti;
+        }
+
+        public Member AnonymousLogin(MemberModel.Input.AnonymousLogin input)
+        {
+            var user = new Member()
+            {
+                Name = input.Name,
+                Dob = null,
+                Email = input.Email,
+                Phone = null,
+                Gender = null,
+                Password = Utilities.RandomPassword(),
+                Address = null,
+                Active = true,
+                AccountFrom = input.AccountFrom
+            };
+
+            if (user != null)
+            {
+                _context.Members.Add(user);
+                _context.SaveChanges();
+            }
+
+            return user;
+        }
+
+        public NotetiModel ChangePassword(MemberModel.Input.ChangePassword input)
+        {
+            var result = new NotetiModel();
+            try
+            {
+                var changeUser = _context.Members.FirstOrDefault(x => x.Email.Equals(input.Email));
+                if (changeUser != null)
+                {
+                    if (changeUser.Password == input.OldPassword)
+                    {
+                        changeUser.Password = input.NewPassword;
+                        var change = _context.SaveChanges();
+                        if (change > 0)
+                        {
+                            result.IsSuccess = true;
+                            result.Noteti = "Change password Success";
+                        }
+                        else
+                        {
+                            result.IsSuccess = false;
+                            result.Noteti = "Change password incorrect";
+                        }
+                    }
+                    else
+                    {
+                        result.IsSuccess = false;
+                        result.Noteti = "Old Password incorrect";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Noteti = "Error: " + ex.Message;
+            }
+
+            return result;
         }
     }
 }
