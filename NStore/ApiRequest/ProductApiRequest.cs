@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NStore.Common;
 using NStore.Models;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,14 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace NStore.Common
+namespace NStore.ApiRequest
 {
     public class ProductApiRequest
     {
         public static int CreateProductRequest(ProductModel.Output.AddProduct request)
         {
-            var thanhvien = AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
-            var nhanvien = AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
+            var thanhvien = Common.AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
+            var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
             client.BaseAddress = new Uri("https://localhost:5001");
@@ -57,8 +58,8 @@ namespace NStore.Common
 
         public static int UpdateProductRequest(ProductModel.Output.UpdateProduct request)
         {
-            var thanhvien = AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
-            var nhanvien = AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
+            var thanhvien = Common.AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
+            var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
             client.BaseAddress = new Uri("https://localhost:5001");
@@ -100,8 +101,8 @@ namespace NStore.Common
 
         public static async Task<ProductModel.Output.DeleteProduct> DeleteProduct(ProductModel.Input.DeleteProduct request)
         {
-            var thanhvien = AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
-            var nhanvien = AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
+            var thanhvien = Common.AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
+            var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
             client.BaseAddress = new Uri("https://localhost:5001");
@@ -129,8 +130,8 @@ namespace NStore.Common
 
         public static async Task<List<CategoryModel>> GetCategoryAsync()
         {
-            var thanhvien = AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
-            var nhanvien = AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
+            var thanhvien = Common.AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
+            var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
             client.BaseAddress = new Uri("https://localhost:5001");
@@ -148,6 +149,85 @@ namespace NStore.Common
                 return data;
             }
             throw new Exception(body);
+        }
+
+        public static int AddImageRequest(ProductImageModel.Output.AddImage request)
+        {
+            var thanhvien = Common.AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
+            var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
+
+            HttpClient client = new();
+            client.BaseAddress = new Uri("https://localhost:5001");
+            client.DefaultRequestHeaders.Accept.Clear();
+            if (thanhvien != null)
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", thanhvien.AccessToken);
+            else if (nhanvien != null)
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", nhanvien.AccessToken);
+            client.DefaultRequestHeaders.Accept.Add(
+                                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var requestContent = new MultipartFormDataContent();
+            if (request.ThumbnailImage != null)
+            {
+                byte[] data;
+                using (var br = new BinaryReader(request.ThumbnailImage.OpenReadStream()))
+                {
+                    data = br.ReadBytes((int)request.ThumbnailImage.OpenReadStream().Length);
+                }
+                ByteArrayContent bytes = new ByteArrayContent(data);
+                requestContent.Add(bytes, "thumbnailImage", request.ThumbnailImage.FileName);
+            }
+            requestContent.Add(new StringContent(request.SortOrder.ToString()), "sortOrder");
+            requestContent.Add(new StringContent(request.ProductId.ToString()), "productId");
+            requestContent.Add(new StringContent(request.IsDefault.ToString()), "isDefault");
+
+            var response = client.PostAsync($"/api/Products/AddImage", requestContent).Result;
+            int result = 0;
+            if (response.IsSuccessStatusCode)
+            {
+                result = response.Content.ReadFromJsonAsync<int>().Result;
+            }
+            return result;
+        }
+
+        public static int UpdateImageRequest(ProductImageModel.Output.UpdateImage request)
+        {
+            var thanhvien = Common.AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
+            var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
+
+            HttpClient client = new();
+            client.BaseAddress = new Uri("https://localhost:5001");
+            client.DefaultRequestHeaders.Accept.Clear();
+            if (thanhvien != null)
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", thanhvien.AccessToken);
+            else if (nhanvien != null)
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", nhanvien.AccessToken);
+            client.DefaultRequestHeaders.Accept.Add(
+                                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var requestContent = new MultipartFormDataContent();
+            if (request.ThumbnailImage != null)
+            {
+                byte[] data;
+                using (var br = new BinaryReader(request.ThumbnailImage.OpenReadStream()))
+                {
+                    data = br.ReadBytes((int)request.ThumbnailImage.OpenReadStream().Length);
+                }
+                ByteArrayContent bytes = new ByteArrayContent(data);
+                requestContent.Add(bytes, "thumbnailImage", request.ThumbnailImage.FileName);
+            }
+            requestContent.Add(new StringContent(request.SortOrder.ToString()), "sortOrder");
+            requestContent.Add(new StringContent(request.ProductId.ToString()), "productId");
+            requestContent.Add(new StringContent(request.IsDefault.ToString()), "isDefault");
+            requestContent.Add(new StringContent(request.Id.ToString()), "id");
+
+            var response = client.PostAsync($"/api/Products/UpdateImage", requestContent).Result;
+            int result = 0;
+            if (response.IsSuccessStatusCode)
+            {
+                result = response.Content.ReadFromJsonAsync<int>().Result;
+            }
+            return result;
         }
     }
 }

@@ -118,5 +118,62 @@ namespace NStoreAPI.Controllers
             var products = _iProduct.GetLatestProduct(take);
             return Ok(products);
         }
+
+        [HttpPost("GetAllImage/{id}")]
+        public IActionResult GetAllImage(ProductImageModel.Input.GetAllImageProduct request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = _iProduct.GetAllImage(request);
+
+            return Ok(result);
+        }
+
+        [HttpPost("GetImageById/{imageId}")]
+        public IActionResult GetImageById(int imageId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = _iProduct.GetImageById(imageId);
+
+            return Ok(result);
+        }
+
+        [HttpPost("AddImage")]
+        [Consumes("multipart/form-data")]
+        public IActionResult AddImage([FromForm] ProductImageModel.Output.AddImage request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = _iProduct.AddImage(request);
+
+            return Ok(result);
+        }
+
+        [HttpPost("UpdateImage")]
+        [Consumes("multipart/form-data")]
+        public IActionResult UpdateImage([FromForm] ProductImageModel.Output.UpdateImage request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = _iProduct.UpdateImage(request);
+
+            return Ok(result);
+        }
+
+        [HttpPost("DeleteImage/{imageId}")]
+        public IActionResult DeleteImage(int imageId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = _iProduct.DeleteImage(imageId);
+
+            return Ok(result);
+        }
     }
 }

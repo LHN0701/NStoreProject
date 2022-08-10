@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using NStore.ApiRequest;
 using NStore.Areas.Manage.Models.Authorization;
 using NStore.Common;
 using NStore.Models;

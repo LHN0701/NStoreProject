@@ -104,6 +104,7 @@
                                     </a>
                                 </span> |
                                 @Html.ActionLink("CategoryAssign", "CategoryAssignRequest", new { productId = item.Id }) |
+                                @Html.ActionLink("AllImage", "GetAllImage", new { productId = item.Id }) |
                             </td>
                         </tr>
                     }

@@ -329,5 +329,125 @@ namespace Service.Services
             }
             return _context.SaveChanges();
         }
+
+        public List<ProductImageModel.ProductImageBase> GetAllImage(ProductImageModel.Input.GetAllImageProduct request)
+        {
+            var product = _context.Products.FirstOrDefault(x => x.Id.Equals(request.ProductId));
+            var listImage = _context.ProductImages.Where(x => x.ProductId.Equals(request.ProductId)).ToList();
+
+            var result = listImage.OrderBy(a => a.SortOrder).ToList().Select(x => new ProductImageModel.ProductImageBase()
+            {
+                SortOrder = x.SortOrder,
+                ProductName = product.Name,
+                ImagePath = x.ImagePath,
+                DateCreated = x.DateCreated,
+                IsDefault = x.IsDefault,
+                FileSize = x.FileSize,
+                ProductId = x.ProductId,
+                Id = x.Id
+            }).ToList();
+            return result;
+        }
+
+        public ProductImageModel.ProductImageBase GetImageById(int imageId)
+        {
+            var image = _context.ProductImages.FirstOrDefault(x => x.Id.Equals(imageId));
+
+            var productImage = new ProductImageModel.ProductImageBase()
+            {
+                Id = image.Id,
+                DateCreated = image.DateCreated,
+                FileSize = image.FileSize,
+                ImagePath = image.ImagePath,
+                IsDefault = image.IsDefault,
+                ProductId = image.ProductId,
+                SortOrder = image.SortOrder,
+            };
+
+            return productImage;
+        }
+
+        public int AddImage(ProductImageModel.Output.AddImage request)
+        {
+            int sortOrder = 0;
+            var listImage = _context.ProductImages.Where(x => x.ProductId.Equals(request.ProductId)).ToList();
+
+            if (request.IsDefault == true)
+            {
+                var imageDefault = listImage.FirstOrDefault(x => x.IsDefault.Equals(true));
+                imageDefault.IsDefault = false;
+            }
+
+            var image = new ProductImage()
+            {
+                //Product = _context.Products.FirstOrDefault(x => x.Id.Equals(request.ProductId)),
+                ProductId = request.ProductId,
+                DateCreated = DateTime.Now,
+                FileSize = request.ThumbnailImage.Length,
+                ImagePath = this.SaveFile(request.ThumbnailImage),
+                IsDefault = request.IsDefault,
+                SortOrder = sortOrder
+            };
+            _context.ProductImages.Add(image);
+            _context.SaveChanges();
+            return request.ProductId;
+        }
+
+        public int UpdateImage(ProductImageModel.Output.UpdateImage request)
+        {
+            int sortOrder = 0;
+            var listImage = _context.ProductImages.Where(x => x.ProductId.Equals(request.ProductId)).ToList();
+
+            if (request.IsDefault == true)
+            {
+                var imageDefault = listImage.FirstOrDefault(x => x.IsDefault.Equals(true));
+                if (imageDefault != null)
+                    imageDefault.IsDefault = false;
+            }
+
+            var image = _context.ProductImages.FirstOrDefault(x => x.Id.Equals(request.Id));
+
+            if (image != null)
+            {
+                image.ProductId = request.ProductId;
+                image.IsDefault = request.IsDefault;
+                image.DateCreated = DateTime.Now;
+                image.SortOrder = sortOrder;
+
+                if (request.ThumbnailImage != null)
+                {
+                    image.FileSize = request.ThumbnailImage.Length;
+                    image.ImagePath = this.SaveFile(request.ThumbnailImage);
+                }
+
+                _context.ProductImages.Update(image);
+                _context.SaveChanges();
+                return image.ProductId;
+            };
+
+            return 0;
+        }
+
+        public int DeleteImage(int imageId)
+        {
+            var image = _context.ProductImages.FirstOrDefault(x => x.Id.Equals(imageId));
+
+            if (image == null)
+            {
+                return 0;
+            }
+
+            _storage.DeleteFileAsync(image.ImagePath);
+            _context.ProductImages.Remove(image);
+
+            var change = _context.SaveChanges();
+
+            if (change > 0)
+            {
+                return image.ProductId;
+            }
+
+            return 0;
+        }
     }
 }

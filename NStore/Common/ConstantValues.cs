@@ -22,6 +22,10 @@ namespace NStore.Common
             public const string CategoryAssign = "api/Products/CategoryAssign";
             public const string Update = "api/Products";
             public const string Delete = "api/Products/Delete";
+            public const string GetAllImage = "api/Products/GetAllImage";
+            public const string GetImageById = "api/Products/GetImageById";
+            public const string AddImage = "api/Products/AddImage";
+            public const string DeleteImage = "api/Products/DeleteImage";
         }
 
         public class Category
