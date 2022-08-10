@@ -5,7 +5,8 @@
     Layout = "~/Areas/Manage/Views/Shared/_LayoutBackend.cshtml";
 }
 
-@section Scripts{
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script src="https://cdn.ckeditor.com/ckeditor5/21.0.0/classic/ckeditor.js"></script>
     <script>
         ClassicEditor
@@ -20,6 +21,7 @@
             });
     </script>
 }
+
 <div class="container-fluid">
     <h1 class="mt-4">Create Product</h1>
     <ol class="breadcrumb mb-4">
@@ -80,7 +82,3 @@
         </div>
     </div>
 </div>
-
-@*@section Scripts {
-        @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    }*@

@@ -13,17 +13,18 @@ namespace NStore.Models
         {
             public int Id { get; set; }
 
-            [Display(Name = "Tên banner")]
-            [Required(ErrorMessage = "Tên phải khác rỗng")]
+            [Display(Name = "Name banner")]
+            [Required(ErrorMessage = "Name must be non-empty.")]
             public string Name { get; set; }
 
-            [Display(Name = "Hình banner")]
+            [Display(Name = "Picture banner")]
             public string Picture { get; set; }
 
-            [Display(Name = "Liên kết (URL)")]
+            [Display(Name = "URL")]
             public string Url { get; set; }
 
-            [Display(Name = "Kích hoạt")]
+            [Display(Name = "Active")]
+            [Required(ErrorMessage = "Active must be non-empty.")]
             public bool Active { get; set; }
         }
 
@@ -34,7 +35,7 @@ namespace NStore.Models
 
             public class ListSlide
             {
-                public bool Quantri { get; set; }
+                public bool Manage { get; set; }
             }
 
             public class ReadSlideInfo
@@ -55,11 +56,14 @@ namespace NStore.Models
 
             public class CreateSlide : SlideBannerBase
             {
+                [Display(Name = "ThumbnailImage")]
+                [Required(ErrorMessage = "ThumbnailImage must be non-empty.")]
                 public IFormFile ThumbnailImage { get; set; }
             }
 
             public class UpdateSlide : SlideBannerBase
             {
+                [Display(Name = "ThumbnailImage")]
                 public IFormFile ThumbnailImage { get; set; }
             }
 

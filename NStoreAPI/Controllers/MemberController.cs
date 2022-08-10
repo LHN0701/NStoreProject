@@ -53,13 +53,14 @@ namespace NStoreAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public MemberModel.Output.MemberInfo Login(MemberModel.Input.LoginInfo input)
+        public IActionResult Login(MemberModel.Input.LoginInfo input)
         {
-            MemberModel.Output.MemberInfo memberinfo = new();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var member = _iMember.Login(input.UserName, input.Password);
             if (member != null)
             {
-                Utilities.PropertyCopier<Member, MemberModel.Output.MemberInfo>.Copy(member, memberinfo);
                 var memberInfo = new UserInfo
                 {
                     Id = member.Id,
@@ -67,9 +68,12 @@ namespace NStoreAPI.Controllers
                     Username = member.Email,
                     UserAgent = HttpContext.Request.Headers["User-Agent"].ToString()
                 };
-                memberinfo.AccessToken = _jwtAuthManager.CreateToken(memberInfo);
+                if (member.Email != null)
+                {
+                    member.AccessToken = _jwtAuthManager.CreateToken(memberInfo);
+                }
             }
-            return memberinfo;
+            return Ok(member);
         }
 
         [HttpPost("Logout")]

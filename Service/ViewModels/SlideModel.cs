@@ -30,7 +30,7 @@ namespace Service.ViewModels
 
             public class ListSlide
             {
-                public bool Quantri { get; set; }
+                public bool Manage { get; set; }
             }
 
             public class ReadSlideInfo

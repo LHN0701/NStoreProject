@@ -55,10 +55,10 @@ namespace NStore.Areas.Manage.Controllers
 
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public IActionResult Create([FromForm] ProductModel.Output.AddProduct request)
+        public IActionResult Create(ProductModel.Output.AddProduct request)
         {
             if (!ModelState.IsValid)
-                return View(request);
+                return View();
 
             var result = ProductApiRequest.CreateProductRequest(request);
             if (result > 0)
@@ -96,6 +96,7 @@ namespace NStore.Areas.Manage.Controllers
         {
             if (!ModelState.IsValid)
                 return View();
+
             var result = ProductApiRequest.UpdateProductRequest(request);
             if (result > 0)
             {

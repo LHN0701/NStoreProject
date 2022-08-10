@@ -23,7 +23,7 @@ namespace NStore.Areas.Manage.Controllers
 
         public IActionResult Index()
         {
-            var input = new SlideModel.Input.ListSlide { Quantri = true };
+            var input = new SlideModel.Input.ListSlide { Manage = true };
             var dsBanner = Utilities.SendDataRequest<List<SlideModel.Output.SlideInfo>>(ConstantValues.Slide.ListSlide, input);
             if (TempData["result"] != null)
             {

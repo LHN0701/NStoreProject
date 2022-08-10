@@ -18,11 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\Picture\Slides\img0.jpg" />
-    <None Include="wwwroot\Picture\Slides\img19.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\Picture\Products\" />
   </ItemGroup>
 

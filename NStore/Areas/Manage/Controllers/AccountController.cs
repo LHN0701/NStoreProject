@@ -188,21 +188,24 @@ namespace NStore.Areas.Manage.Controllers
 
             var input = new UserModel.Input.LoginInfo { UserName = username, Password = password };
             var user = Utilities.SendDataRequest<UserModel.Output.UserInfo>(ConstantValues.User.Login, input);
-            HttpContext.Session.Remove("NhanVien");
+            HttpContext.Session.Remove("User");
             if (user != null)
             {
                 if (user.Id > 0)
                 {
                     bool logined = LoginUser(user, remember);
                     if (logined)
-                        HttpContext.Session.Set<UserModel.Output.UserInfo>("NhanVien", user);
+                        HttpContext.Session.Set<UserModel.Output.UserInfo>("User", user);
                     if (!string.IsNullOrEmpty(returnUrl))
                         return Redirect(returnUrl);
                     else
                         return RedirectToAction("Index", "Home");
                 }
                 else
-                    TempData["LoginNoteti"] = user.Noteti;
+                {
+                    ModelState.AddModelError("", user.Noteti);
+                    return View();
+                }
             }
             return RedirectToAction("Index", "Home");
         }

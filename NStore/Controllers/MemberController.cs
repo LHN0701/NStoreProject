@@ -32,10 +32,10 @@ namespace NStore.Controllers
         [HttpPost]
         public IActionResult Login(string username, string password, bool remember = false, string returnUrl = null)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(ModelState);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return View();
+            //}
             if (username == null) username = "";
             if (password == null) password = "";
 
@@ -56,7 +56,10 @@ namespace NStore.Controllers
                         return RedirectToAction("Index", "Home");
                 }
                 else
-                    TempData["result"] = member.Noteti;
+                {
+                    ModelState.AddModelError("", member.Noteti);
+                    return View();
+                }
             }
             return RedirectToAction("Index", "Home");
         }

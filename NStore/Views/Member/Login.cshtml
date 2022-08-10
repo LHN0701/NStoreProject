@@ -54,18 +54,20 @@
         <div class="well">
             <h5>YOU HAVE ALREADY REGISTERED !</h5>
             <form asp-action="Login" asp-controller="Member" method="post">
-                <div class="control-group">
+                <div class="form-group">
                     <label class="control-label" for="inputEmail1">Email</label>
-                    <div class="controls">
-                        <input asp-for="UserName" class="span3" type="text" id="inputEmail1" placeholder="Email">
-                    </div>
+
+                    <input asp-for="UserName" class="span3 form-control" type="text" id="inputEmail1" placeholder="Email">
+                    <label><span asp-validation-for="UserName" class="text-error"></span></label>
                 </div>
-                <div class="control-group">
+                <div class="form-group">
                     <label class="control-label" for="inputPassword1">Password</label>
-                    <div class="controls">
-                        <input asp-for="Password" type="password" class="span3" id="inputPassword1" placeholder="Password">
-                    </div>
+
+                    <input asp-for="Password" type="password" class="span3" id="inputPassword1" placeholder="Password">
+                    <label><span asp-validation-for="Password" class="text-error"></span></label>
                 </div>
+                <div asp-validation-summary="ModelOnly" class="text-error"></div>
+
                 <div class="control-group">
                     <div class="flex-container">
 
@@ -79,7 +81,8 @@
                              data-size="large"
                              data-theme="outline"
                              data-text="Sign in"
-                             data-shape="circle">
+                             data-shape="circle"
+                             data-locale="us-uk">
                         </div>
                     </div>
                 </div>
@@ -184,3 +187,10 @@
         })
     }
 </script>
+
+@section Scripts {
+    @{
+
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

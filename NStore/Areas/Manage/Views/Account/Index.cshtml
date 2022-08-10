@@ -91,11 +91,14 @@
                                             <i class="fa fa-bars" aria-hidden="true" style="font-size: 16px; margin-right: 20px"></i>
                                         </a>
                                     </span>
-                                    <span>
-                                        <a asp-area="Manage" asp-controller="Account" asp-action="Delete" asp-route-id="@item.Id" onclick="return DeleteComfirm(event);" title="Delete user">
-                                            <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px;"></i>
-                                        </a>
-                                    </span>
+                                    @if (tr)
+                                    {
+                                        <span>
+                                            <a asp-area="Manage" asp-controller="Account" asp-action="Delete" asp-route-id="@item.Id" onclick="return DeleteComfirm(event);" title="Delete user">
+                                                <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px;"></i>
+                                            </a>
+                                        </span>
+                                    }
                                 </td>
                             </tr>
                         }

@@ -202,10 +202,7 @@ namespace Service.Models
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.Property(e => e.Picture)
-                    .IsRequired()
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
+                entity.Property(e => e.Picture).IsRequired();
 
                 entity.Property(e => e.Url)
                     .HasMaxLength(250)

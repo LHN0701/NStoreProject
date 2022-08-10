@@ -28,12 +28,11 @@
                     <div class="form-group">
                         <label asp-for="Url" class="control-label"></label>
                         <input asp-for="Url" class="form-control" />
-                        <span asp-validation-for="Url" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
                         <label asp-for="ThumbnailImage" class="control-label"></label>
-                        <input asp-for="ThumbnailImage" id="picture" type="file" class="form-control" class="form-control" />
+                        <input asp-for="ThumbnailImage" id="picture" type="file" class="form-control" />
                         <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
                         <div class="col-sm-7 col-md-9">
                             <input asp-for="Id" type="hidden" />
@@ -75,3 +74,7 @@
         }
     });
 </script>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

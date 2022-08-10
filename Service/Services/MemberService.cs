@@ -19,19 +19,26 @@ namespace Service.Services
             _context = context;
         }
 
-        public Member Login(string UserName, string Password)
+        public MemberModel.Output.MemberInfo Login(string UserName, string Password)
         {
-            var member = new Member();
-            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+            var memberInfo = new MemberModel.Output.MemberInfo();
+            var member = _context.Members.FirstOrDefault(x => x.Email.Equals(UserName)
+                                 && x.Active.Equals(true));
+
+            if (member == null)
             {
-                try
-                {
-                    member = _context.Members.FirstOrDefault(x => x.Email.Equals(UserName)
-                                        && x.Password.Equals(Password) && x.Active.Equals(true));
-                }
-                catch { }
+                memberInfo.Noteti = "Account does not exist!";
+                return memberInfo;
             }
-            return member;
+            if (member.Password != Password)
+            {
+                memberInfo.Noteti = "Password incorrect!";
+                return memberInfo;
+            }
+
+            Utilities.PropertyCopier<Member, MemberModel.Output.MemberInfo>.Copy(member, memberInfo);
+
+            return memberInfo;
         }
 
         public MemberModel.Output.MemberInfo Register(MemberModel.Input.Register input)
@@ -42,6 +49,14 @@ namespace Service.Services
                 return new MemberModel.Output.MemberInfo()
                 {
                     Noteti = "Tài khoản đã tồn tại"
+                };
+            }
+
+            if (DateTime.Compare(input.Dob, new DateTime(1900, 1, 1)) < 0)
+            {
+                return new MemberModel.Output.MemberInfo()
+                {
+                    Noteti = "Date of birth must be greater than 01/01/1900"
                 };
             }
 

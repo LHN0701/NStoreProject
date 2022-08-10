@@ -12,29 +12,34 @@ namespace NStore.Models
         {
             public int Id { get; set; }
 
-            [Display(Name = "Họ tên nhân viên")]
-            [Required(ErrorMessage = "Họ tên phải khác rỗng")]
+            [Display(Name = "Name")]
+            [Required(ErrorMessage = "Name must be non-empty.")]
             public string Name { get; set; }
 
-            [Display(Name = "Giới tính")]
+            [Display(Name = "Gender")]
+            [Required(ErrorMessage = "Gender must be non-empty.")]
             public bool Gender { get; set; }
 
-            [Display(Name = "Ngày sinh")]
+            [Display(Name = "Date of birth")]
+            [Required(ErrorMessage = "Date of birth must be non-empty.")]
+            [DataType(DataType.Date)]
+            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
             public DateTime Dob { get; set; }
 
-            [Display(Name = "Địa chỉ")]
+            [Display(Name = "Address")]
+            [Required(ErrorMessage = "Address must be non-empty.")]
             public string Address { get; set; }
 
-            [Required(ErrorMessage = "Số CMND phải khác rỗng")]
-            [Display(Name = "Số CMND")]
+            [Required(ErrorMessage = "Identification must be non-empty.")]
+            [Display(Name = "Identification")]
             public string Identification { get; set; }
 
-            [Required(ErrorMessage = "Mật khẩu phải khác rỗng")]
-            [Display(Name = "Mật khẩu")]
+            [Required(ErrorMessage = "Password must be non-empty.")]
+            [Display(Name = "Password")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Quyền hạn")]
+            [Display(Name = "Role")]
             public string Role { get; set; }
         }
 
@@ -51,7 +56,7 @@ namespace NStore.Models
                 [Required(ErrorMessage = "Please enter your password.")]
                 public string Password { get; set; }
 
-                [Display(Name = "Ghi nhớ đăng nhập")]
+                [Display(Name = "Remember")]
                 public bool Remember { get; set; }
             }
 

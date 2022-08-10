@@ -21,7 +21,7 @@ namespace NStore.Controllers
 
         public IActionResult Index()
         {
-            var input = new SlideModel.Input.ListSlide { Quantri = false };
+            var input = new SlideModel.Input.ListSlide { Manage = false };
             var data = new HomeModel
             {
                 Slides = Utilities.SendDataRequest<List<SlideModel.Output.SlideInfo>>(ConstantValues.Home.Slides, input),
