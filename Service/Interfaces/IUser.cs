@@ -10,7 +10,7 @@ namespace Service.Interfaces
 {
     public interface IUser
     {
-        User Login(string UserName, string Password);
+        UserModel.Output.UserInfo Login(string UserName, string Password);
 
         List<User> GetAllUsers();
 

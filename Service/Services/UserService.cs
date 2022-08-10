@@ -1,4 +1,5 @@
-﻿using Service.Interfaces;
+﻿using Service.Common;
+using Service.Interfaces;
 using Service.Models;
 using Service.ViewModels;
 using System;
@@ -63,36 +64,45 @@ namespace Service.Services
             var user = _context.Users.FirstOrDefault(x => x.Identification.Equals(input.Identification));
             if (user != null)
             {
-                result.IsSuccess = false;
-                result.Noteti = "User already exists!";
+                return new NotetiModel()
+                {
+                    IsSuccess = false,
+                    Noteti = "Identification already exists!"
+                };
+            }
+            if (DateTime.Compare(input.Dob, new DateTime(1900, 1, 1)) < 0)
+            {
+                return new NotetiModel()
+                {
+                    IsSuccess = false,
+                    Noteti = "Date of birth must be greater than 01/01/1900!"
+                };
+            }
+            var createUser = new User()
+            {
+                Name = input.Name,
+                Gender = input.Gender,
+                Dob = input.Dob,
+                Address = input.Address,
+                Identification = input.Identification,
+                Password = input.Password,
+                Role = input.Role
+            };
+
+            if (createUser != null)
+            {
+                _context.Add(createUser);
+                var change = _context.SaveChanges();
+                if (change > 0)
+                {
+                    result.IsSuccess = true;
+                    result.Noteti = "Create user success!";
+                }
             }
             else
             {
-                var createUser = new User()
-                {
-                    Name = input.Name,
-                    Gender = input.Gender,
-                    Dob = input.Dob,
-                    Address = input.Address,
-                    Identification = input.Identification,
-                    Password = input.Password,
-                    Role = input.Role
-                };
-                if (createUser != null)
-                {
-                    _context.Add(createUser);
-                    var change = _context.SaveChanges();
-                    if (change > 0)
-                    {
-                        result.IsSuccess = true;
-                        result.Noteti = "Create user success!";
-                    }
-                }
-                else
-                {
-                    result.IsSuccess = false;
-                    result.Noteti = "Create user fail!";
-                }
+                result.IsSuccess = false;
+                result.Noteti = "Create user fail!";
             }
 
             return result;
@@ -130,19 +140,25 @@ namespace Service.Services
             return _context.Users.FirstOrDefault(x => x.Id.Equals(id));
         }
 
-        public User Login(string UserName, string Password)
+        public UserModel.Output.UserInfo Login(string UserName, string Password)
         {
-            var user = new User();
-            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+            var userInfo = new UserModel.Output.UserInfo();
+            var user = _context.Users.FirstOrDefault(x => x.Identification.Equals(UserName));
+
+            if (user == null)
             {
-                try
-                {
-                    user = _context.Users.FirstOrDefault(x => x.Identification.Equals(UserName)
-                                        && x.Password.Equals(Password));
-                }
-                catch { }
+                userInfo.Noteti = "Account does not exist!";
+                return userInfo;
             }
-            return user;
+            if (user.Password != Password)
+            {
+                userInfo.Noteti = "Password incorrect!";
+                return userInfo;
+            }
+
+            Utilities.PropertyCopier<User, UserModel.Output.UserInfo>.Copy(user, userInfo);
+
+            return userInfo;
         }
 
         public NotetiModel UpdateUser(int id, UserModel.UserBase input)
@@ -154,6 +170,11 @@ namespace Service.Services
             {
                 result.IsSuccess = false;
                 result.Noteti = "User have not already exists!";
+            }
+            else if (DateTime.Compare(input.Dob, new DateTime(1900, 1, 1)) < 0)
+            {
+                result.IsSuccess = false;
+                result.Noteti = "Date of birth must be greater than 01/01/1900!";
             }
             else
             {

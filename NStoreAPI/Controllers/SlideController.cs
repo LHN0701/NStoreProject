@@ -23,7 +23,7 @@ namespace NStoreAPI.Controllers
         [HttpPost("ListSlide")]
         public List<SlideModel.Output.SlideInfo> ListSlide(SlideModel.Input.ListSlide input)
         {
-            var slides = _iSlide.ListSlide(input.Quantri);
+            var slides = _iSlide.ListSlide(input.Manage);
             var listSlide = slides.Select(x => new SlideModel.Output.SlideInfo
             {
                 Id = x.Id,

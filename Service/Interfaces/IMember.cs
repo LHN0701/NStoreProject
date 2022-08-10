@@ -12,7 +12,7 @@ namespace Service.Interfaces
     {
         Member AnonymousLogin(MemberModel.Input.AnonymousLogin input);
 
-        Member Login(string UserName, string Password);
+        MemberModel.Output.MemberInfo Login(string UserName, string Password);
 
         MemberModel.Output.MemberInfo Register(MemberModel.Input.Register input);
 

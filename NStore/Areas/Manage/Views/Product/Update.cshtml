@@ -5,6 +5,7 @@
 }
 
 @section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script src="https://cdn.ckeditor.com/ckeditor5/33.0.0/classic/ckeditor.js"></script>
     <script>
         ClassicEditor

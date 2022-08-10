@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace NStore.Models
 {
@@ -12,34 +13,35 @@ namespace NStore.Models
         {
             public int Id { get; set; }
 
-            [Required(ErrorMessage = "Họ tên phải khác rỗng")]
-            [Display(Name = "Họ tên")]
+            [Required(ErrorMessage = "Please enter your name.")]
+            [Display(Name = "Name")]
             public string Name { get; set; }
 
-            [Display(Name = "Giới tính")]
+            [Required(ErrorMessage = "Please choose your Gender.")]
+            [Display(Name = "Gender")]
             public bool Gender { get; set; }
 
-            [Display(Name = "Ngày sinh")]
+            [Required(ErrorMessage = "Please enter your date of birth.")]
+            [Display(Name = "Date of birth")]
             [DataType(DataType.Date)]
+            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
             public DateTime Dob { get; set; }
 
-            [Required(ErrorMessage = "Email phải khác rỗng")]
+            [Required(ErrorMessage = "Please enter your email.")]
             [Display(Name = "Email")]
             [DataType(DataType.EmailAddress)]
-            [EmailAddress(ErrorMessage = "Email không đúng định dạng")]
+            [EmailAddress(ErrorMessage = "Invalid email.")]
             public string Email { get; set; }
 
-            [Required(ErrorMessage = "Điện thoại phải khác rỗng")]
-            [Display(Name = "Điện thoại")]
+            [Display(Name = "Phone")]
             public string Phone { get; set; }
 
-            [Required(ErrorMessage = "Mật khẩu phải khác rỗng")]
-            [Display(Name = "Mật khẩu")]
+            [Required(ErrorMessage = "Please enter your password.")]
+            [Display(Name = "Password")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Required(ErrorMessage = "Địa chỉ phải khác rỗng")]
-            [Display(Name = "Địa chỉ")]
+            [Display(Name = "Address")]
             public string Address { get; set; }
 
             public bool Active { get; set; }
@@ -83,7 +85,7 @@ namespace NStore.Models
                 [Required(ErrorMessage = "Please enter your password.")]
                 public string Password { get; set; }
 
-                [Display(Name = "Ghi nhớ đăng nhập")]
+                [Display(Name = "Remember")]
                 public bool Remember { get; set; }
             }
 
@@ -109,9 +111,9 @@ namespace NStore.Models
         {
             public class Register : MemberBase
             {
-                [Required(ErrorMessage = "Xác nhận Mật khẩu phải khác rỗng")]
-                [Display(Name = "Xác nhận mật khẩu")]
-                [Compare("Password", ErrorMessage = "Xác nhận lại mật khẩu không đúng.")]
+                [Required(ErrorMessage = "Please enter your password.")]
+                [Display(Name = "ConfirmPassword")]
+                [Compare("Password", ErrorMessage = "Confirm password incorrect.")]
                 [DataType(DataType.Password)]
                 public string ConfirmPassword { get; set; }
             }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Bootshop online Shopping cart</title>
+    <title>NStore online Shopping cart</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -61,7 +61,7 @@
                     <span class="icon-bar"></span>
                 </a>
                 <div class="navbar-inner">
-                    <a class="brand" href="/"><img src="/themes/images/logo.png" alt="Bootsshop" /></a>
+                    <a class="brand" href="/"><img src="/themes/images/logo.png" alt="NStore" /></a>
 
                     @await Component.InvokeAsync("Search")
 
@@ -217,6 +217,8 @@
         </div>
     </div>
     <span id="/themesBtn"></span>
-    @RenderSection("scripts", required: false)
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

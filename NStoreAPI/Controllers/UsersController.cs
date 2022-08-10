@@ -28,13 +28,14 @@ namespace NStoreAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public UserModel.Output.UserInfo Login(UserModel.Input.LoginInfo input)
+        public IActionResult Login(UserModel.Input.LoginInfo input)
         {
-            UserModel.Output.UserInfo userinfo = new();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var user = _iUser.Login(input.UserName, input.Password);
             if (user != null)
             {
-                Utilities.PropertyCopier<User, UserModel.Output.UserInfo>.Copy(user, userinfo);
                 var userInfo = new UserInfo
                 {
                     Id = user.Id,
@@ -42,9 +43,12 @@ namespace NStoreAPI.Controllers
                     Username = user.Identification,
                     UserAgent = HttpContext.Request.Headers["User-Agent"].ToString()
                 };
-                userinfo.AccessToken = _jwtAuthManager.CreateToken(userInfo);
+                if (user.Identification != null)
+                {
+                    user.AccessToken = _jwtAuthManager.CreateToken(userInfo);
+                }
             }
-            return userinfo;
+            return Ok(user);
         }
 
         [Authorize]

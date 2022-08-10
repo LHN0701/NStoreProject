@@ -61,6 +61,8 @@
                 var html = '';
                 var total = 0;
                 var numberItem = 0;
+                var element = document.getElementById('diliveryprice');
+                var diliveryPrice = element.getAttribute('data-dilivery');
 
                 $.each(res, function (i, item) {
                     var amount = item.price * item.quantity;
@@ -80,6 +82,7 @@
                         + "</tr>";
                     total += amount;
                 });
+                total -= diliveryPrice;
                 $('#cart_body').html(html);
                 $('#lbl_number_items').text(numberItem);
                 $('#lbl_total').text(numberWithCommas(total));

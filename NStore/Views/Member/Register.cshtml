@@ -25,63 +25,66 @@
         </div>*@
     <form asp-action="Register" asp-controller="Member" method="post" class="form-horizontal">
         <h4>Your personal information</h4>
-        <div asp-validation-summary="All" class="text-error">
+        <div asp-validation-summary="ModelOnly" class="text-error">
         </div>
         <div class="control-group">
-            <label class="control-label" for="inputFname1">Full Name <sup>*</sup></label>
+            <label class="control-label" for="inputFname1">Full name <sup style="color:red">*</sup></label>
             <div class="controls">
-                <input type="text" asp-for="Name" placeholder="First Name">
+                <input type="text" asp-for="Name" placeholder="Full Name">
                 <span asp-validation-for="Name" class="text-error"></span>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="inputFname1">Choose your gender: <sup>*</sup></label>
+            <label class="control-label" for="inputFname1">Choose your gender: <sup style="color:red">*</sup></label>
             <div class="controls">
                 <label for="male">Male</label>
                 <input type="radio" asp-for="Gender" name="gender" id="male" value="true" checked>
                 <label for="female">Female</label>
                 <input type="radio" asp-for="Gender" name="gender" id="female" value="false">
+                <span asp-validation-for="Gender" class="text-error"></span>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="input_email">Date of birth <sup>*</sup></label>
+            <label class="control-label" for="input_email">Date of birth <sup style="color:red">*</sup></label>
             <div class="controls">
-                <input type="date" asp-for="Dob" placeholder="Email">
+                <input type="date" asp-for="Dob" placeholder="Date of birth">
+                <span asp-validation-for="Dob" class="text-error"></span>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="input_email">Email <sup>*</sup></label>
+            <label class="control-label" for="input_email">Email <sup style="color:red">*</sup></label>
             <div class="controls">
                 <input type="email" asp-for="Email" placeholder="Email">
                 <span asp-validation-for="Email" class="text-error"></span>
             </div>
         </div>
+
         <div class="control-group">
-            <label class="control-label" for="inputPassword1">Phone <sup>*</sup></label>
-            <div class="controls">
-                <input type="text" asp-for="Phone" placeholder="User Name">
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="inputPassword1">Password <sup>*</sup></label>
+            <label class="control-label" for="inputPassword1">Password <sup style="color:red">*</sup></label>
             <div class="controls">
                 <input type="password" asp-for="Password" placeholder="Password">
+                <span asp-validation-for="Password" class="text-error"></span>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="inputPassword1">Confirm Password <sup>*</sup></label>
+            <label class="control-label" for="inputPassword1">Confirm Password <sup style="color:red">*</sup></label>
             <div class="controls">
                 <input type="password" asp-for="ConfirmPassword" placeholder="Confirm Password">
+                <span asp-validation-for="ConfirmPassword" class="text-error"></span>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="inputPassword1">Address <sup>*</sup></label>
+            <label class="control-label" for="inputPassword1">Phone </label>
             <div class="controls">
-                <input type="text" asp-for="Address" placeholder="Confirm Password">
+                <input type="text" asp-for="Phone" placeholder="Phone">
             </div>
         </div>
-
-        <p><sup>*</sup>Required field	</p>
+        <div class="control-group">
+            <label class="control-label" for="inputPassword1">Address </label>
+            <div class="controls">
+                <input type="text" asp-for="Address" placeholder="Address">
+            </div>
+        </div>
 
         <div class="control-group">
             <div class="controls">
@@ -92,3 +95,10 @@
         </div>
     </form>
 </div>
+
+@section Scripts {
+    @{
+
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

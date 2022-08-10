@@ -13,17 +13,30 @@ namespace NStore.Models
         {
             public int Id { get; set; }
 
-            [Required(ErrorMessage = "Please enter product name")]
+            [Required(ErrorMessage = "Please enter product Name.")]
             public string Name { get; set; }
 
+            [Required(ErrorMessage = "Please enter product Price.")]
             public decimal Price { get; set; }
+
+            [Required(ErrorMessage = "Please enter product OriginalPrice.")]
             public decimal OriginalPrice { get; set; }
+
+            [Required(ErrorMessage = "Please enter product Stock.")]
             public int Stock { get; set; }
+
             public int ViewCount { get; set; }
+
             public DateTime DateCreated { get; set; }
+
+            [Required(ErrorMessage = "Please enter product Description.")]
             public string Description { get; set; }
+
+            [Required(ErrorMessage = "Please enter product Details.")]
             public string Details { get; set; }
+
             public string ImagePath { get; set; }
+
             public List<string> Categories { get; set; } = new List<string>();
         }
 
@@ -88,11 +101,14 @@ namespace NStore.Models
 
             public class AddProduct : ProductBase
             {
+                [Display(Name = "ThumbnailImage")]
+                [Required(ErrorMessage = "Product avatar must be non-empty.")]
                 public IFormFile ThumbnailImage { get; set; }
             }
 
             public class UpdateProduct : ProductBase
             {
+                [Display(Name = "ThumbnailImage")]
                 public IFormFile ThumbnailImage { get; set; }
             }
 
