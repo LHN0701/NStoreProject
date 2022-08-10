@@ -27,5 +27,15 @@ namespace Service.Interfaces
         List<ProductModel.ProductBase> GetFeaturedProducts(int take);
 
         List<ProductModel.ProductBase> GetLatestProduct(int take);
+
+        List<ProductImageModel.ProductImageBase> GetAllImage(ProductImageModel.Input.GetAllImageProduct request);
+
+        ProductImageModel.ProductImageBase GetImageById(int imageId);
+
+        int AddImage(ProductImageModel.Output.AddImage request);
+
+        int UpdateImage(ProductImageModel.Output.UpdateImage request);
+
+        int DeleteImage(int imageId);
     }
 }

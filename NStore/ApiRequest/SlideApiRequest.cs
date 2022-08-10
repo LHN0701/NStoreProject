@@ -1,5 +1,6 @@
-﻿using NStore.Models;
+﻿using NStore.Common;
 using System;
+using NStore.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,14 +9,14 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace NStore.Common
+namespace NStore.ApiRequest
 {
     public class SlideApiRequest
     {
         public static int CreateSlideRequest(SlideModel.Output.CreateSlide request)
         {
-            var thanhvien = AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
-            var nhanvien = AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
+            var thanhvien = Common.AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
+            var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
             client.BaseAddress = new Uri("https://localhost:5001");
@@ -53,8 +54,8 @@ namespace NStore.Common
 
         public static int UpdateSlideRequest(SlideModel.Output.UpdateSlide request)
         {
-            var thanhvien = AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
-            var nhanvien = AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
+            var thanhvien = Common.AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
+            var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
             client.BaseAddress = new Uri("https://localhost:5001");

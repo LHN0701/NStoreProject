@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NStore.ApiRequest;
 using NStore.Areas.Manage.Models.Authorization;
 using NStore.Common;
 using NStore.Models;
@@ -159,6 +160,106 @@ namespace NStore.Areas.Manage.Controllers
             var roleAssignRequest = CategoryAssignRequest(request.Id);
 
             return View(roleAssignRequest);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllImage(int productId)
+        {
+            var input = new ProductImageModel.Input.GetAllImageProduct()
+            {
+                ProductId = productId
+            };
+
+            if (TempData["result"] != null)
+            {
+                ViewBag.Successmsg = TempData["result"];
+            }
+
+            var listImages = Utilities.SendDataRequest<List<ProductImageModel.ProductImageBase>>(ConstantValues.Product.GetAllImage + $"/{productId}", input);
+
+            return View(listImages);
+        }
+
+        [HttpGet]
+        public IActionResult AddImage(int productId)
+        {
+            var model = new ProductImageModel.Output.AddImage()
+            {
+                ProductId = productId
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public IActionResult AddImage(ProductImageModel.Output.AddImage input)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = ProductApiRequest.AddImageRequest(input);
+
+            if (result > 0)
+            {
+                TempData["result"] = "Create product success!";
+                return RedirectToAction("GetAllImage", new ProductImageModel.Input.GetAllImageProduct { ProductId = result });
+            }
+
+            ModelState.AddModelError("", "Create product fail!");
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult UpdateImage(int imageId)
+        {
+            var image = Utilities.SendDataRequest<ProductImageModel.ProductImageBase>(ConstantValues.Product.GetImageById + $"/{imageId}", imageId);
+
+            var updateImage = new ProductImageModel.Output.UpdateImage()
+            {
+                Id = image.Id,
+                IsDefault = image.IsDefault,
+                ImagePath = image.ImagePath,
+                SortOrder = image.SortOrder,
+                ProductId = image.ProductId
+            };
+
+            return View(updateImage);
+        }
+
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public IActionResult UpdateImage(ProductImageModel.Output.UpdateImage input)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = ProductApiRequest.UpdateImageRequest(input);
+
+            if (result > 0)
+            {
+                TempData["result"] = "Update product success!";
+                return RedirectToAction("GetAllImage", new ProductImageModel.Input.GetAllImageProduct { ProductId = result });
+            }
+
+            ModelState.AddModelError("", "Update product fail!");
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult DeleteImage(int imageId)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = Utilities.SendDataRequest<int>(ConstantValues.Product.DeleteImage + $"/{imageId}", imageId);
+            if (result > 0)
+            {
+                TempData["result"] = "Delete image success!";
+                return RedirectToAction("GetAllImage", new ProductImageModel.Input.GetAllImageProduct { ProductId = result });
+            }
+
+            ModelState.AddModelError("", "Delete image fail!");
+            return View();
         }
     }
 }

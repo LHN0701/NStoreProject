@@ -12,11 +12,13 @@ namespace Service.Services
     public class FileStorageService : IStorage
     {
         private readonly string _userContentFolder;
+        private readonly string _deleteUserContentFolder;
         private const string USER_CONTENT_FOLDER_NAME = "wwwroot\\Picture\\Products";
 
         public FileStorageService(IHostEnvironment webHostEnvironment)
         {
             _userContentFolder = Path.Combine(webHostEnvironment.ContentRootPath, USER_CONTENT_FOLDER_NAME);
+            _deleteUserContentFolder = webHostEnvironment.ContentRootPath;
         }
 
         public string GetFileUrl(string fileName)
@@ -33,12 +35,19 @@ namespace Service.Services
 
         public async Task DeleteFileAsync(string fileName)
         {
-            var filePath = Path.Combine(_userContentFolder, fileName);
+            var filePath = _deleteUserContentFolder + "\\wwwroot" + fileName.Replace("/", "\\");
             if (File.Exists(filePath))
             {
                 await Task.Run(() => File.Delete(filePath));
                 System.IO.File.Delete(filePath);
             }
+
+            //var filePath = Path.Combine(_userContentFolder, fileName);
+            //if (File.Exists(filePath))
+            //{
+            //await Task.Run(() => File.Delete(filePath));
+            //    System.IO.File.Delete(filePath);
+            //}
         }
     }
 }

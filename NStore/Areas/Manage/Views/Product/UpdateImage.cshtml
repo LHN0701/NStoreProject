@@ -1,0 +1,74 @@
+﻿@model ProductImageModel.Output.UpdateImage
+@{
+    ViewData["Title"] = "UpdateImage";
+    Layout = "~/Areas/Manage/Views/Shared/_LayoutBackend.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Update Image</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Home Page</a></li>
+        <li class="breadcrumb-item active">Update Image</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="GetAllImage" asp-controller="Product" asp-route-productId="@Model.ProductId">Return</a>
+        </div>
+
+        <div class="card-body">
+            <div class="col-md-8">
+                <form asp-action="UpdateImage" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="ProductId" class="form-control" />
+                    <input type="hidden" asp-for="Id" class="form-control" />
+
+                    <div class="form-group">
+                        <label asp-for="SortOrder" class="control-label"></label>
+                        <input asp-for="SortOrder" class="form-control" />
+                        <span asp-validation-for="SortOrder" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ThumbnailImage" class="control-label"></label>
+                        <input asp-for="ThumbnailImage" id="picture" type="file" class="form-control" />
+                        <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
+                        <div class="col-sm-7 col-md-9">
+                            <input asp-for="Id" type="hidden" />
+                            <a href="@("https://localhost:5001" + Model.ImagePath)" title="@Model.Id.ToString()">
+                                <img src="@("https://localhost:5001" + Model.ImagePath)" id="imgThumbnail" class="img-responsive" style="margin-top: 5px; width: 200px; height: auto;" />
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label asp-for="IsDefault" class="control-label me-2"></label>
+                        <input asp-for="IsDefault" type="checkbox" />
+                        <span asp-validation-for="IsDefault" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="submit" value="Update" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    const inputFile = document.getElementById("picture");
+    const imgPreview = document.getElementById("imgThumbnail");
+    inputFile.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.addEventListener("load", function () {
+                imgPreview.setAttribute("src", this.result);
+                var res = this.result.split(";base64,");
+            });
+            reader.readAsDataURL(file);
+        } else {
+            imgPreview.setAttribute("src", "");
+        }
+    });
+</script>
