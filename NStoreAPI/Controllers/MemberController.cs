@@ -47,7 +47,10 @@ namespace NStoreAPI.Controllers
                     Username = member.Email,
                     UserAgent = HttpContext.Request.Headers["User-Agent"].ToString()
                 };
-                memberinfo.AccessToken = _jwtAuthManager.CreateToken(memberInfo);
+                if (member.Email != null)
+                {
+                    memberinfo.AccessToken = _jwtAuthManager.CreateToken(memberInfo);
+                }
             }
             return Ok(memberinfo);
         }

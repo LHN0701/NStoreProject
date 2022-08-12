@@ -123,6 +123,13 @@ namespace Service.Services
 
         public Member AnonymousLogin(MemberModel.Input.AnonymousLogin input)
         {
+            var member = _context.Members.FirstOrDefault(x => x.Email.Equals(input.Email));
+
+            if (member != null)
+            {
+                return null;
+            }
+
             var user = new Member()
             {
                 Name = input.Name,

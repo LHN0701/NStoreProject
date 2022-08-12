@@ -6,17 +6,47 @@
 }
 
 <style>
-    .flex-container {
-        display: flex;
+    .container_swap {
+        width: 400px;
+        margin-top: 10px;
     }
 
-        .flex-container > div {
-            color: white;
-            width: 100%;
-            text-align: center;
-        }
+    .div_left {
+        width: 128px;
+        float: left;
+        text-align: right;
+        margin-right: 10px;
+    }
+
+    .div_right {
+        width: 128px;
+        float: left;
+        text-align: left;
+        margin-left: 10px;
+    }
+
+    .social-icon button {
+        font-size: 20px;
+        color: white;
+        height: 30px;
+        width: 30px;
+        background: #283fade8;
+        border-radius: 60%;
+        /*margin: 0px 10px;*/
+        border: none;
+        cursor: pointer;
+    }
 </style>
 
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+@*facebook login*@
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v14.0" nonce="RPdVa8XV"></script>
+
+@*google login*@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <div id="g_id_onload"
      data-client_id="340756934455-me7d2546r51equ2co3j4mga6fqgtfpcb.apps.googleusercontent.com"
@@ -57,7 +87,7 @@
                 <div class="form-group">
                     <label class="control-label" for="inputEmail1">Email</label>
 
-                    <input asp-for="UserName" class="span3 form-control" type="text" id="inputEmail1" placeholder="Email">
+                    <input asp-for="UserName" class="span3" type="text" id="inputEmail1" placeholder="Email">
                     <label><span asp-validation-for="UserName" class="text-error"></span></label>
                 </div>
                 <div class="form-group">
@@ -68,29 +98,28 @@
                 </div>
                 <div asp-validation-summary="ModelOnly" class="text-error"></div>
 
-                <div class="control-group">
-                    <div class="flex-container">
+                <div class="form-control">
+                    <button type="submit" class="btn" style="width:270px;">Sign in</button>
+                </div>
+                <div class="form-control">
+                    <a asp-controller="Member" asp-action="ForgetPassword" style=" margin:5px 85px 0 85px;">Forget password?</a>
+                </div>
 
-                        <div>
-                            <fb:login-button scope="public_profile,email"
-                                             onlogin="facebookLogin();">
-                            </fb:login-button>
-                        </div>
+                <div class="form-group container_swap">
+                    <div class="social-icon div_left">
 
-                        <div class="g_id_signin"
-                             data-type="icon"
-                             data-size="large"
-                             data-theme="outline"
-                             data-text="Sign in"
-                             data-locale="us-uk">
-                        </div>
+                        <button type="button" onclick="facebookLogin()"><i class="fa fa-facebook"></i> @*<i class="fa-brands fa-facebook-f"></i>*@</button>
                     </div>
-                </div>
-                <div class="control-group">
-                    <button type="submit" class="btn">Sign in</button>
-                </div>
-                <div class="control-group">
-                    <a asp-controller="Member" asp-action="ForgetPassword">Forget password?</a>
+
+                    <div class="g_id_signin div_right"
+                         data-type="icon"
+                         data-size="medium"
+                         data-theme="outline"
+                         data-shape="circle"
+                         data-width=200
+                         data-text="Sign in"
+                         data-locale="en_US">
+                    </div>
                 </div>
             </form>
         </div>
@@ -98,6 +127,8 @@
 </div>
 
 <script>
+
+    // login facebook
 
     window.fbAsyncInit = function () {
         FB.init({
@@ -138,10 +169,10 @@
                         AccountFrom: "Facebook"
                     },
                     success: function (res) {
-                        window.location.href = "/Member/CheckInfo";
+                        window.location.href = "/Member/AnonymousSuccess";
                     },
                     error: function (err) {
-
+                        window.location.href = "/Member/AnonymousFail";
                     }
                 })
             })
@@ -154,6 +185,8 @@
             }
         }
     }
+
+    //login google
 
     function parseJwt(token) {
         var base64Url = token.split('.')[1];
@@ -179,12 +212,14 @@
                 AccountFrom: "Google"
             },
             success: function (res) {
-                window.location.href = "/Member/CheckInfo";
+                window.location.href = "/Member/AnonymousSuccess";
             },
             error: function (err) {
+                window.location.href = "/Member/AnonymousFail";
 
             }
         })
+
     }
 </script>
 

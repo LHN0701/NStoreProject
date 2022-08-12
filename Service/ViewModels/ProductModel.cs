@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Service.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,6 +96,11 @@ namespace Service.ViewModels
             {
                 public int Id { get; set; }
                 public List<ProductModel.Input.CategoryAssign> Categories { get; set; }
+            }
+
+            public class DetailProduct : ProductBase
+            {
+                public List<ProductImageModel.ProductImageBase> ProductImages { get; set; }
             }
         }
     }
