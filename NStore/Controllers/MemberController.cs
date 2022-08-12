@@ -88,19 +88,23 @@ namespace NStore.Controllers
             };
             var anonumousLogin = Utilities.SendDataRequest<MemberModel.Output.MemberInfo>(ConstantValues.Member.AnonymousLogin, input);
 
-            bool logined = LoginUser(anonumousLogin, false);
-            if (logined)
-                HttpContext.Session.Set<MemberModel.Output.MemberInfo>("Member", anonumousLogin);
+            if (anonumousLogin.AccessToken != null)
+            {
+                bool logined = LoginUser(anonumousLogin, false);
+                if (logined)
+                    HttpContext.Session.Set<MemberModel.Output.MemberInfo>("Member", anonumousLogin);
 
-            //var message = @"<div style='margin:4px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#444;line-height:18px;font-weight:normal'>Hi <b>" + request.Name + "</b>,<br/><br/></div>" +
-            //            "<div>Thank you for registering as a member at NStore.<br/><br/> </div>" +
-            //            "<div>Your account:<br/><br/> </div>" +
-            //            "<div>UserName: " + anonumousLogin.Email + ".<br/><br/> </div>" +
-            //            "<div>Password: " + anonumousLogin.Password + ".<br/><br/> </div>";
+                //var message = @"<div style='margin:4px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#444;line-height:18px;font-weight:normal'>Hi <b>" + request.Name + "</b>,<br/><br/></div>" +
+                //            "<div>Thank you for registering as a member at NStore.<br/><br/> </div>" +
+                //            "<div>Your account:<br/><br/> </div>" +
+                //            "<div>UserName: " + anonumousLogin.Email + ".<br/><br/> </div>" +
+                //            "<div>Password: " + anonumousLogin.Password + ".<br/><br/> </div>";
 
-            //var sendMail = Utilities.SendMail("Confirm register member", message, request.Email);
+                //var sendMail = Utilities.SendMail("Confirm register member", message, request.Email);
 
-            return Ok();
+                return Ok();
+            }
+            return BadRequest();
         }
 
         [HttpGet]
@@ -229,7 +233,12 @@ namespace NStore.Controllers
             return View();
         }
 
-        public IActionResult CheckInfo()
+        public IActionResult AnonymousSuccess()
+        {
+            return View();
+        }
+
+        public IActionResult AnonymousFail()
         {
             return View();
         }

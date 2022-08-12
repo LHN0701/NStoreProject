@@ -12,7 +12,7 @@ namespace Service.Interfaces
     {
         ProductModel.Output.PagedResult GetAllPaging(ProductModel.Input.GetProductPagingRequest request);
 
-        ProductModel.ProductBase GetById(int productId);
+        ProductModel.Output.DetailProduct GetById(int productId);
 
         int ViewCount(int productId);
 

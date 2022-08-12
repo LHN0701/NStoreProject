@@ -56,7 +56,7 @@ namespace NStore.Controllers
         [HttpGet]
         public IActionResult Detail(int productId)
         {
-            var data = Utilities.SendDataRequest<ProductModel.ProductBase>(ConstantValues.Product.Detail + $"/{productId}", productId);
+            var data = Utilities.SendDataRequest<ProductModel.Output.DetailProduct>(ConstantValues.Product.Detail + $"/{productId}", productId);
             var addView = Utilities.SendDataRequest<int>(ConstantValues.Product.ViewCount + $"/{productId}", productId);
             return View(data);
         }

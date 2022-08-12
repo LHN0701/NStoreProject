@@ -77,7 +77,7 @@ namespace Service.Services
             return pagedResult;
         }
 
-        public ProductModel.ProductBase GetById(int productId)
+        public ProductModel.Output.DetailProduct GetById(int productId)
         {
             var product = _context.Products.FirstOrDefault(x => x.Id.Equals(productId));
 
@@ -86,8 +86,9 @@ namespace Service.Services
                               where pic.ProductId == productId
                               select c.Name).ToList();
             var image = _context.ProductImages.FirstOrDefault(x => x.ProductId.Equals(productId) && x.IsDefault == true);
+            var imageExtant = _context.ProductImages.Where(x => x.ProductId.Equals(productId) && x.IsDefault == false).ToList();
 
-            var productModel = new ProductModel.ProductBase()
+            var result = new ProductModel.Output.DetailProduct()
             {
                 Id = product.Id,
                 DateCreated = product.DateCreated,
@@ -99,9 +100,21 @@ namespace Service.Services
                 Stock = product.Stock,
                 ViewCount = product.ViewCount,
                 Categories = categories,
-                ImagePath = image.ImagePath
+                ImagePath = image.ImagePath,
+                ProductImages = imageExtant.Select(x => new ProductImageModel.ProductImageBase()
+                {
+                    Id = x.Id,
+                    DateCreated = x.DateCreated,
+                    FileSize = x.FileSize,
+                    ImagePath = x.ImagePath,
+                    IsDefault = x.IsDefault,
+                    ProductId = x.ProductId,
+                    SortOrder = x.SortOrder,
+                    ProductName = product.Name
+                }).ToList()
             };
-            return productModel;
+
+            return result;
         }
 
         public int Create(ProductModel.Output.AddProduct request)
@@ -369,13 +382,48 @@ namespace Service.Services
 
         public int AddImage(ProductImageModel.Output.AddImage request)
         {
-            int sortOrder = 0;
-            var listImage = _context.ProductImages.Where(x => x.ProductId.Equals(request.ProductId)).ToList();
+            var listImage = _context.ProductImages.Where(x => x.ProductId.Equals(request.ProductId)).ToList().OrderBy(a => a.SortOrder).ToList();
 
             if (request.IsDefault == true)
             {
                 var imageDefault = listImage.FirstOrDefault(x => x.IsDefault.Equals(true));
                 imageDefault.IsDefault = false;
+
+                request.SortOrder = 1;
+
+                for (int i = request.SortOrder - 1; i < listImage.Count; i++)
+                {
+                    listImage[i].SortOrder++;
+                }
+            }
+            else
+            {
+                if (request.SortOrder == 1)
+                {
+                    var imageDefault = listImage.FirstOrDefault(x => x.IsDefault.Equals(true));
+                    imageDefault.IsDefault = false;
+
+                    request.IsDefault = true;
+
+                    for (int i = request.SortOrder - 1; i < listImage.Count; i++)
+                    {
+                        listImage[i].SortOrder++;
+                    }
+                }
+                else
+                {
+                    if (request.SortOrder > listImage.Count)
+                    {
+                        request.SortOrder = listImage.Count + 1;
+                    }
+                    else
+                    {
+                        for (int i = request.SortOrder - 1; i < listImage.Count; i++)
+                        {
+                            listImage[i].SortOrder++;
+                        }
+                    }
+                }
             }
 
             var image = new ProductImage()
@@ -386,23 +434,57 @@ namespace Service.Services
                 FileSize = request.ThumbnailImage.Length,
                 ImagePath = this.SaveFile(request.ThumbnailImage),
                 IsDefault = request.IsDefault,
-                SortOrder = sortOrder
+                SortOrder = request.SortOrder
             };
             _context.ProductImages.Add(image);
             _context.SaveChanges();
-            return request.ProductId;
+            return image.ProductId;
         }
 
         public int UpdateImage(ProductImageModel.Output.UpdateImage request)
         {
-            int sortOrder = 0;
-            var listImage = _context.ProductImages.Where(x => x.ProductId.Equals(request.ProductId)).ToList();
+            var listImage = _context.ProductImages.Where(x => x.ProductId.Equals(request.ProductId)).ToList().OrderBy(a => a.SortOrder).ToList();
 
             if (request.IsDefault == true)
             {
                 var imageDefault = listImage.FirstOrDefault(x => x.IsDefault.Equals(true));
-                if (imageDefault != null)
+                imageDefault.IsDefault = false;
+
+                request.SortOrder = 1;
+
+                for (int i = request.SortOrder - 1; i < listImage.Count; i++)
+                {
+                    listImage[i].SortOrder++;
+                }
+            }
+            else
+            {
+                if (request.SortOrder == 1)
+                {
+                    var imageDefault = listImage.FirstOrDefault(x => x.IsDefault.Equals(true));
                     imageDefault.IsDefault = false;
+
+                    request.IsDefault = true;
+
+                    for (int i = request.SortOrder - 1; i < listImage.Count; i++)
+                    {
+                        listImage[i].SortOrder++;
+                    }
+                }
+                else
+                {
+                    if (request.SortOrder > listImage.Count)
+                    {
+                        request.SortOrder = listImage.Count + 1;
+                    }
+                    else
+                    {
+                        for (int i = request.SortOrder - 1; i < listImage.Count; i++)
+                        {
+                            listImage[i].SortOrder++;
+                        }
+                    }
+                }
             }
 
             var image = _context.ProductImages.FirstOrDefault(x => x.Id.Equals(request.Id));
@@ -412,7 +494,7 @@ namespace Service.Services
                 image.ProductId = request.ProductId;
                 image.IsDefault = request.IsDefault;
                 image.DateCreated = DateTime.Now;
-                image.SortOrder = sortOrder;
+                image.SortOrder = request.SortOrder;
 
                 if (request.ThumbnailImage != null)
                 {
@@ -432,9 +514,19 @@ namespace Service.Services
         {
             var image = _context.ProductImages.FirstOrDefault(x => x.Id.Equals(imageId));
 
+            var listImages = _context.ProductImages.Where(x => x.ProductId.Equals(image.ProductId)).ToList().OrderBy(a => a.SortOrder).ToList();
+
             if (image == null)
             {
                 return 0;
+            }
+
+            if (image.SortOrder > 1)
+            {
+                for (int i = image.SortOrder; i < listImages.Count; i++)
+                {
+                    listImages[i].SortOrder--;
+                }
             }
 
             _storage.DeleteFileAsync(image.ImagePath);

@@ -57,20 +57,20 @@ namespace NStore.Models
             {
                 public string Email { get; set; }
 
-                [Required(ErrorMessage = "Mật khẩu cũ phải khác rỗng.")]
-                [Display(Name = "Mật khẩu cũ")]
+                [Required(ErrorMessage = "Please enter your password.")]
+                [Display(Name = "OldPassword")]
                 [DataType(DataType.Password)]
                 public string OldPassword { get; set; }
 
-                [Required(ErrorMessage = "Mật khẩu mới phải khác rỗng.")]
-                [Display(Name = "Mật khẩu mới")]
+                [Required(ErrorMessage = "Please enter your new password.")]
+                [Display(Name = "NewPassword")]
                 [DataType(DataType.Password)]
                 public string NewPassword { get; set; }
 
-                [Required(ErrorMessage = "Nhập lại Mật khẩu mới phải khác rỗng.")]
-                [Display(Name = "Nhập lại Mật khẩu mới")]
+                [Required(ErrorMessage = "Please enter your new password.")]
+                [Display(Name = "EnterNewPassword")]
                 [DataType(DataType.Password)]
-                [Compare("NewPassword", ErrorMessage = "Nhập lại Mật khẩu mới không chính xác.")]
+                [Compare("NewPassword", ErrorMessage = "Confirm password incorrect.")]
                 public string EnterNewPassword { get; set; }
             }
 
@@ -91,10 +91,10 @@ namespace NStore.Models
 
             public class ConfirmEmail
             {
-                [Required(ErrorMessage = "Email phải khác rỗng")]
+                [Required(ErrorMessage = "Please enter your email.")]
                 [Display(Name = "Email")]
                 [DataType(DataType.EmailAddress)]
-                [EmailAddress(ErrorMessage = "Email không đúng định dạng")]
+                [EmailAddress(ErrorMessage = "Email format incorrect")]
                 public string Email { get; set; }
             }
 

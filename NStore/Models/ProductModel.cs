@@ -127,6 +127,11 @@ namespace NStore.Models
                 public CategoryBase Category { get; set; }
                 public PagedResult Result { set; get; }
             }
+
+            public class DetailProduct : ProductBase
+            {
+                public List<ProductImageModel.ProductImageBase> ProductImages { get; set; }
+            }
         }
     }
 }
