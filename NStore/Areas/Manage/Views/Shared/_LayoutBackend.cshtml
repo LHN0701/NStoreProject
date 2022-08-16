@@ -67,6 +67,17 @@
                                         <a class="nav-link" asp-area="Manage" asp-controller="Slide" asp-action="CreateSlide">Create</a>
                                     </nav>
                                 </div>
+
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapsePro" aria-expanded="false" aria-controls="pagesCollapsePro">
+                                    Promotion
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapsePro" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" asp-area="Manage" asp-controller="Promotion" asp-action="Index">List</a>
+                                        <a class="nav-link" asp-area="Manage" asp-controller="Promotion" asp-action="Create">Create</a>
+                                    </nav>
+                                </div>
                             </nav>
                         </div>
                     </div>

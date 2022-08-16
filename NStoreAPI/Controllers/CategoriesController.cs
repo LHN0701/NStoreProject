@@ -26,6 +26,13 @@ namespace NStoreAPI.Controllers
             return Ok(categories);
         }
 
+        [HttpPost("ProductCategory/{id}")]
+        public IActionResult ProductCategory(int id)
+        {
+            var categories = _iCategory.GetProductCategory(id);
+            return Ok(categories);
+        }
+
         [HttpPost("GetById/{id}")]
         public IActionResult GetById(int id)
         {

@@ -20,6 +20,7 @@ namespace NStore.Common
             public const string Detail = "api/Products/Detail";
             public const string ViewCount = "api/Products/ViewCount";
             public const string CategoryAssign = "api/Products/CategoryAssign";
+            public const string ProductCategory = "api/Categories/ProductCategory";
             public const string Update = "api/Products";
             public const string Delete = "api/Products/Delete";
             public const string GetAllImage = "api/Products/GetAllImage";
@@ -68,6 +69,16 @@ namespace NStore.Common
         public class Order
         {
             public const string CreateOrder = "api/Orders/CreateOrder";
+        }
+
+        public class Promotion
+        {
+            public const string GetAll = "api/Promotion/GetAll";
+            public const string GetById = "api/Promotion/GetById";
+            public const string GetPromotionClient = "api/Promotion/GetPromotionClient";
+            public const string CreatePromotion = "api/Promotion/CreatePromotion";
+            public const string UpdatePromotion = "api/Promotion/UpdatePromotion";
+            public const string DeletePromotion = "api/Promotion/DeletePromotion";
         }
     }
 }

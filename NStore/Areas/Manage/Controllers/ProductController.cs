@@ -27,8 +27,8 @@ namespace NStore.Areas.Manage.Controllers
             var data = Utilities.SendDataRequest<ProductModel.Output.PagedResult>(ConstantValues.Product.Paging, input);
             ViewBag.Keyword = keyword;
 
-            var categories = Utilities.SendDataRequest<List<CategoryModel>>(ConstantValues.Category.GetAll);
-            ViewBag.Categories = categories.Select(x => new SelectListItem()
+            var categories = Utilities.SendDataRequest<GetAllCategory>(ConstantValues.Category.GetAll);
+            ViewBag.Categories = categories.CategoryParent.Select(x => new SelectListItem()
             {
                 Text = x.Name,
                 Value = x.Id.ToString(),
@@ -125,20 +125,49 @@ namespace NStore.Areas.Manage.Controllers
         }
 
         [HttpGet]
-        public IActionResult CategoryAssignRequest(int productId)
+        public IActionResult CategoryAssignRequest(int productId, int? categoryId)
         {
-            var product = Utilities.SendDataRequest<ProductModel.ProductBase>(ConstantValues.Product.Detail + $"/{productId}", productId);
-            var categories = Utilities.SendDataRequest<List<CategoryModel>>(ConstantValues.Category.GetAll);
+            var CategoryAssign = new ProductModel.Output.CategoryAssign();
 
-            var CategoryAssign = new ProductModel.Output.CategoryAssign()
+            var categories = Utilities.SendDataRequest<GetAllCategory>(ConstantValues.Category.GetAll);
+            var productCategory = Utilities.SendDataRequest<CategoryModel>(ConstantValues.Product.ProductCategory + $"/{productId}", productId);
+
+            if (productCategory.Id == 0 && categoryId == null)
             {
-                Id = productId,
-                Categories = categories.Select(x => new ProductModel.Input.CategoryAssign()
+                CategoryAssign.Id = productId;
+                CategoryAssign.ParentCategories = categories.CategoryParent.Select(x => new ProductModel.Input.CategoryAssign()
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    ParentId = x.ParentId,
-                    Selected = product.Categories.Contains(x.Name)
+                    ParentId = x.ParentId
+                }).ToList();
+                return View(CategoryAssign);
+            }
+
+            TempData["CategoryParentId"] = productCategory.ParentId;
+            var categoryChild = categories.CategoryChild.Where(x => x.ParentId.Equals(productCategory.ParentId));
+            if (categoryId != null)
+            {
+                categoryChild = categories.CategoryChild.Where(x => x.ParentId.Equals(categoryId));
+                TempData["CategoryParentId"] = categoryId;
+            }
+
+            CategoryAssign = new ProductModel.Output.CategoryAssign()
+            {
+                Id = productId,
+                Categories = categoryChild
+                    .Select(x => new ProductModel.Input.CategoryAssign()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        ParentId = x.ParentId,
+                        Selected = x.Id == productCategory.Id
+                    }).ToList(),
+                ParentCategories = categories.CategoryParent.Select(x => new ProductModel.Input.CategoryAssign()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ParentId = x.ParentId
                 }).ToList()
             };
             return View(CategoryAssign);
@@ -157,9 +186,9 @@ namespace NStore.Areas.Manage.Controllers
                 return RedirectToAction("Index");
             }
             ModelState.AddModelError("", result.Noteti);
-            var roleAssignRequest = CategoryAssignRequest(request.Id);
+            //var roleAssignRequest = CategoryAssignRequest(request.Id, null);
 
-            return View(roleAssignRequest);
+            return View(/*roleAssignRequest*/);
         }
 
         [HttpGet]

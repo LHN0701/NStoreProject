@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using NStore.Areas.Manage.Models.Authorization;
 using NStore.Common;
 using NStore.Models;
 using System;
@@ -14,6 +15,7 @@ namespace NStore.Areas.Manage.Controllers
     [Area("Manage")]
     public class AccountController : Controller
     {
+        [Authorize("Admin", "Staff")]
         public IActionResult Index()
         {
             if (!ModelState.IsValid)
@@ -44,6 +46,7 @@ namespace NStore.Areas.Manage.Controllers
         }
 
         [HttpGet]
+        [Authorize("Admin", "Staff")]
         public IActionResult Detail()
         {
             var id = User.Claims.FirstOrDefault(x => x.Type == "USERID").Value;
@@ -52,6 +55,7 @@ namespace NStore.Areas.Manage.Controllers
         }
 
         [HttpGet]
+        [Authorize("Admin", "Staff")]
         public IActionResult ChangePassword()
         {
             UserModel.Input.ChangePassword model = new();
@@ -59,6 +63,7 @@ namespace NStore.Areas.Manage.Controllers
         }
 
         [HttpPost]
+        [Authorize("Admin", "Staff")]
         public IActionResult ChangePassword(string oldPassword, string newPassword)
         {
             if (!ModelState.IsValid)
@@ -90,6 +95,7 @@ namespace NStore.Areas.Manage.Controllers
         }
 
         [HttpGet]
+        [Authorize("Admin", "Staff")]
         public IActionResult Create()
         {
             UserModel.UserBase model = new();
@@ -97,6 +103,7 @@ namespace NStore.Areas.Manage.Controllers
         }
 
         [HttpPost]
+        [Authorize("Admin", "Staff")]
         public IActionResult Create(UserModel.UserBase input)
         {
             if (!ModelState.IsValid)
@@ -115,6 +122,7 @@ namespace NStore.Areas.Manage.Controllers
         }
 
         [HttpGet]
+        [Authorize("Admin", "Staff")]
         public IActionResult Update(int id)
         {
             if (id > 0)
@@ -129,6 +137,7 @@ namespace NStore.Areas.Manage.Controllers
         }
 
         [HttpPost]
+        [Authorize("Admin", "Staff")]
         public IActionResult Update(UserModel.UserBase input)
         {
             if (!ModelState.IsValid)
@@ -149,6 +158,7 @@ namespace NStore.Areas.Manage.Controllers
         }
 
         [HttpGet]
+        [Authorize("Admin", "Staff")]
         public IActionResult Delete(int id)
         {
             if (!ModelState.IsValid)

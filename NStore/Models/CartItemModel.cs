@@ -20,11 +20,15 @@ namespace NStore.Models
         public List<CartItemModel> CartItems { get; set; }
 
         public CheckOutRequest CheckoutModel { get; set; }
+        public int IdDisCount { get; set; }
+        public int DiscountPercent { get; set; }
     }
 
     public class CheckOutRequest
     {
         public int UserId { get; set; }
+        public int IdDisCount { get; set; }
+
         public string Name { get; set; }
 
         public string Address { get; set; }
@@ -41,5 +45,11 @@ namespace NStore.Models
         public int ProductId { get; set; }
 
         public int Quantity { get; set; }
+    }
+
+    public class CostIncurred
+    {
+        public int IdDisCount { get; set; }
+        public int DiscountPercent { get; set; }
     }
 }

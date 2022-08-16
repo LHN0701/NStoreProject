@@ -140,7 +140,7 @@ namespace Service.Services
                 Password = Utilities.RandomPassword(),
                 Address = null,
                 Active = true,
-                AccountFrom = input.AccountFrom
+                AccountFrom = input.AccountFrom,
             };
 
             if (user != null)

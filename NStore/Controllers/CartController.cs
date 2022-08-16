@@ -12,9 +12,36 @@ namespace NStore.Controllers
 {
     public class CartController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(string codePromotion = null)
         {
-            return View();
+            if (codePromotion == null)
+            {
+                return View();
+            }
+
+            var idMember = 0;
+
+            if (User.Identity.IsAuthenticated && User.Claims.FirstOrDefault(x => x.Type == "ROLE").Value == "member")
+            {
+                idMember = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "MEMBERID").Value);
+            }
+
+            var input = new PromotionModel.Input.GetPromotionClient()
+            {
+                Name = codePromotion,
+                IdMember = idMember
+            };
+
+            var promotionClient = Utilities.SendDataRequest<PromotionModel.Output.GetPromotionClient>(ConstantValues.Promotion.GetPromotionClient, input);
+
+            if (promotionClient.Issuccess == false)
+            {
+                ModelState.AddModelError("", promotionClient.Noteti);
+                return View();
+            }
+
+            TempData["SuccessMsg"] = promotionClient.Noteti;
+            return View(promotionClient);
         }
 
         [HttpGet]
@@ -96,15 +123,21 @@ namespace NStore.Controllers
             return Ok(currentCart);
         }
 
-        public IActionResult CheckOut()
+        public IActionResult CheckOut(CostIncurred request)
         {
-            return View(GetCheckoutViewModel());
+            return View(new CheckOutModel()
+            {
+                CartItems = GetCheckoutViewModel().CartItems,
+                CheckoutModel = new CheckOutRequest(),
+                DiscountPercent = request.DiscountPercent,
+                IdDisCount = request.IdDisCount
+            });
         }
 
         [HttpPost]
         public IActionResult CheckOut(CheckOutModel request)
         {
-            var memberId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "MemberId").Value);
+            var memberId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "MEMBERID").Value);
             var model = GetCheckoutViewModel();
             var orderDetails = new List<OrderDetailModel>();
             foreach (var item in model.CartItems)
@@ -118,6 +151,7 @@ namespace NStore.Controllers
             var checkoutRequest = new CheckOutRequest()
             {
                 UserId = memberId,
+                IdDisCount = request.IdDisCount,
                 Address = request.CheckoutModel.Address,
                 Name = request.CheckoutModel.Name,
                 Email = request.CheckoutModel.Email,
@@ -135,6 +169,7 @@ namespace NStore.Controllers
             }
 
             TempData["SuccessMsg"] = result.Noteti;
+            HttpContext.Session.Remove("CartItem");
             return View(model);
         }
 

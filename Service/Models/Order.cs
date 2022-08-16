@@ -20,6 +20,8 @@ namespace Service.Models
         public string ShipEmail { get; set; }
         public string ShipPhoneNumber { get; set; }
         public int Status { get; set; }
+        public decimal? DiliveryPrice { get; set; }
+        public int? Discount { get; set; }
 
         public virtual Member User { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

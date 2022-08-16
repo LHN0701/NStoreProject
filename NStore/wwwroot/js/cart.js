@@ -61,8 +61,11 @@
                 var html = '';
                 var total = 0;
                 var numberItem = 0;
-                var element = document.getElementById('diliveryprice');
-                var diliveryPrice = element.getAttribute('data-dilivery');
+                var elementDilivery = document.getElementById('diliveryprice');
+                var diliveryPrice = elementDilivery.getAttribute('data-dilivery');
+
+                var elementDiscount = document.getElementById('discountpercent');
+                var discountPercent = elementDiscount.getAttribute('data-discount');
 
                 $.each(res, function (i, item) {
                     var amount = item.price * item.quantity;
@@ -82,10 +85,12 @@
                         + "</tr>";
                     total += amount;
                 });
+
                 total -= diliveryPrice;
+
                 $('#cart_body').html(html);
                 $('#lbl_number_items').text(numberItem);
-                $('#lbl_total').text(numberWithCommas(total));
+                $('#lbl_total').text(numberWithCommas(total - (total * discountPercent / 100)));
             }
         })
     }

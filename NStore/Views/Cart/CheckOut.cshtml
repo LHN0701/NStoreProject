@@ -48,10 +48,29 @@ else
                         <td>@(item.Quantity * item.Price)</td>
                     </tr>
                 }
+                <tr>
+                    <td colspan="4" style="text-align:right"><strong>Dilivery =</strong></td>
+                    <td class="label label-important" style="display:block"> <strong> 2$</strong></td>
+                </tr>
+                @{
+                    var total = @Model.CartItems.Sum(x => x.Quantity * x.Price) - 2;
+                    if (Model.IdDisCount != 0)
+                    {
+                        total = total - total * Model.DiscountPercent / 100;
+                    }
 
+                }
+                @if (Model.IdDisCount != 0)
+                {
+                    <tr>
+                        <td colspan="4" style="text-align:right"><strong>Discount =</strong></td>
+                        <td class="label label-important" style="display:block"> <strong>@Model.DiscountPercent %</strong></td>
+                    </tr>
+
+                }
                 <tr>
                     <td colspan="4" style="text-align:right"><strong>TOTAL =</strong></td>
-                    <td class="label label-important" style="display:block"> <strong> @Model.CartItems.Sum(x => x.Quantity * x.Price).ToString("N0")</strong></td>
+                    <td class="label label-important" style="display:block"> <strong> @total.ToString("N0")$</strong></td>
                 </tr>
             </tbody>
         </table>
@@ -60,6 +79,9 @@ else
             <tr><th>ESTIMATE YOUR SHIPPING </th></tr>
             <tr>
                 <td>
+                    <input type="hidden" id="inputCountry" asp-for="DiscountPercent">
+                    <input type="hidden" id="inputCountry" asp-for="IdDisCount">
+
                     <div class="control-group">
                         <label class="control-label" for="inputCountry">Name </label>
                         <div class="controls">

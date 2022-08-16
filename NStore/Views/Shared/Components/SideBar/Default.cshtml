@@ -1,11 +1,11 @@
-﻿@model List<CategoryModel>
+﻿@model GetAllCategory
 
 <ul id="sideManu" class="nav nav-tabs nav-stacked">
-    @{ var parents = Model.Where(x => x.ParentId == null); }
+    @{ var parents = Model.CategoryParent; }
     @for (int index = 0; index < parents.Count(); index++)
     {
         var parent = parents.ElementAt(index);
-        var children = Model.Where(x => x.ParentId == parent.Id);
+        var children = Model.CategoryChild.Where(x => x.ParentId == parent.Id);
         if (children.Any())
         {
             <li class="subMenu open">

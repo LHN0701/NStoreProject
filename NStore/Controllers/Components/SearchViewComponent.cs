@@ -13,10 +13,10 @@ namespace NStore.Controllers.Components
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var categories = Utilities.SendDataRequest<List<CategoryModel>>(ConstantValues.Category.GetAll);
-            categories = categories.Where(x => x.ParentId.Equals(null)).ToList();
+            var categories = Utilities.SendDataRequest<GetAllCategory>(ConstantValues.Category.GetAll);
+
             TempData["CategoryParentId"] = ViewBag.CategoryParentId;
-            return View(categories);
+            return View(categories.CategoryParent);
         }
     }
 }

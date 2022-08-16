@@ -95,6 +95,8 @@ namespace Service.Models
 
             modelBuilder.Entity<Order>(entity =>
             {
+                entity.Property(e => e.DiliveryPrice).HasColumnType("decimal(18, 2)");
+
                 entity.Property(e => e.OrderDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ShipAddress)
@@ -157,9 +159,7 @@ namespace Service.Models
             {
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
 
-                entity.Property(e => e.ImagePath)
-                    .IsRequired()
-                    .HasMaxLength(200);
+                entity.Property(e => e.ImagePath).IsRequired();
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductImages)
@@ -189,10 +189,6 @@ namespace Service.Models
 
             modelBuilder.Entity<Promotion>(entity =>
             {
-                entity.HasNoKey();
-
-                entity.Property(e => e.DiscountAmount).HasColumnType("decimal(18, 2)");
-
                 entity.Property(e => e.Name).IsRequired();
             });
 

@@ -230,8 +230,8 @@ namespace Service.Services
 
         public ProductModel.Output.CategoryAssign CategoryAssign(int id, ProductModel.Output.CategoryAssign request)
         {
-            var user = _context.Products.Find(id);
-            if (user == null)
+            var product = _context.Products.Find(id);
+            if (product == null)
             {
                 return new ProductModel.Output.CategoryAssign()
                 {

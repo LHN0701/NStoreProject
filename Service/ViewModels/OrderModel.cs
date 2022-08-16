@@ -9,6 +9,8 @@ namespace Service.ViewModels
     public class CheckOutRequest
     {
         public int UserId { get; set; }
+        public int IdDisCount { get; set; }
+
         public string Name { get; set; }
 
         public string Address { get; set; }
