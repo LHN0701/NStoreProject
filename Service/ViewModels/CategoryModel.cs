@@ -12,4 +12,10 @@ namespace Service.ViewModels
         public string Name { get; set; }
         public int? ParentId { get; set; }
     }
+
+    public class GetAllCategory
+    {
+        public List<CategoryModel> CategoryParent { get; set; }
+        public List<CategoryModel> CategoryChild { get; set; }
+    }
 }

@@ -120,6 +120,7 @@ namespace NStore.Models
             {
                 public int Id { get; set; }
                 public List<ProductModel.Input.CategoryAssign> Categories { get; set; }
+                public List<ProductModel.Input.CategoryAssign> ParentCategories { get; set; }
             }
 
             public class ProductCategoryViewModel

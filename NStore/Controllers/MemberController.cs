@@ -71,8 +71,8 @@ namespace NStore.Controllers
             //var input = new UserModel.Input.LoginInfo { UserName = user.Email, Password = user.Password };
             var input = User.Claims.FirstOrDefault(x => x.Type == "NAME").Value;
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.Session.Remove("Member");
-            //HttpContext.Session.Clear();
+            //HttpContext.Session.Remove("Member");
+            HttpContext.Session.Clear();
             Utilities.SendDataRequest<bool>(ConstantValues.Member.Logout, input);
             return RedirectToAction("Index", "Home");
         }
@@ -248,9 +248,9 @@ namespace NStore.Controllers
             try
             {
                 var userClaims = new List<Claim>() {
-                    new Claim("MemberId", member.Id.ToString()),
+                    new Claim("MEMBERID", member.Id.ToString()),
                     new Claim("USERNAME", member.Email),
-                    new Claim("Role", "member"),
+                    new Claim("ROLE", "member"),
                     new Claim("NAME", member.Name),
                     new Claim("EMAIL", member.Email)
                 };

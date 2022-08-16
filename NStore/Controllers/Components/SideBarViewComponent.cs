@@ -12,7 +12,7 @@ namespace NStore.Controllers.Components
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var item = Utilities.SendDataRequest<List<CategoryModel>>(ConstantValues.Category.GetAll);
+            var item = Utilities.SendDataRequest<GetAllCategory>(ConstantValues.Category.GetAll);
             return View(item);
         }
     }

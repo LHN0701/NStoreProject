@@ -28,13 +28,13 @@ namespace NStore.Controllers
             var data = Utilities.SendDataRequest<ProductModel.Output.PagedResult>(ConstantValues.Product.Paging, input);
             ViewBag.Keyword = keyword;
 
-            var categories = Utilities.SendDataRequest<List<CategoryModel>>(ConstantValues.Category.GetAll);
-            ViewBag.Categories = categories.Select(x => new SelectListItem()
-            {
-                Text = x.Name,
-                Value = x.Id.ToString(),
-                Selected = categoryId.HasValue && categoryId.Value == x.Id
-            });
+            //var categories = Utilities.SendDataRequest<List<CategoryModel>>(ConstantValues.Category.GetAll);
+            //ViewBag.Categories = categories.Select(x => new SelectListItem()
+            //{
+            //    Text = x.Name,
+            //    Value = x.Id.ToString(),
+            //    Selected = categoryId.HasValue && categoryId.Value == x.Id
+            //});
 
             var category = Utilities.SendDataRequest<CategoryBase>(ConstantValues.Category.GetById + $"/{categoryId}", categoryId);
 

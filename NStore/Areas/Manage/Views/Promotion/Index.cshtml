@@ -1,0 +1,111 @@
+﻿@model List<PromotionModel.PromotionBase>
+@{
+    ViewData["Title"] = "Promotion";
+    Layout = "~/Areas/Manage/Views/Shared/_LayoutBackend.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">List Promotion</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Home page</a></li>
+        <li class="breadcrumb-item active">List Promotion</li>
+    </ol>
+
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-action="Create" asp-controller="Promotion">Create</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+            </div>
+            <table class="table" id="">
+                <thead>
+                    <tr>
+                        <th>
+                            Series
+                        </th>
+                        <th>
+                            Code sale
+                        </th>
+                        <th>
+                            Date start
+                        </th>
+                        <th>
+                            Date end
+                        </th>
+                        <th>
+                            % discount
+                        </th>
+                        <th>
+                            Amount
+                        </th>
+                        <th>
+                            Apply for all
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @if (Model.Count > 0)
+                {
+                    var stt = 0;
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            stt++;
+                            <tr>
+                                <td data-title="Series"><span>@item.Id</span></td>
+                                <td data-title="Name"><span>@item.Name</span></td>
+                                <td data-title="Gender"><span>@item.FromDate.ToString("dd/MM/yyyy")</span></td>
+                                <td data-title="Dob"><span>@item.ToDate.ToString("dd/MM/yyyy")</span></td>
+                                <td data-title="Address"><span>@item.DiscountPercent</span></td>
+                                <td data-title="Identitynum"><span>@item.DiscountAmount</span></td>
+                                <td data-title="Role"><span>@item.ApplyForAll</span></td>
+                                <td data-title="">
+                                    <span>
+                                        <a asp-area="Manage" asp-controller="Promotion" asp-action="Update" asp-route-id="@item.Id" title="Update promotion">
+                                            <i class="fa fa-bars" aria-hidden="true" style="font-size: 16px; margin-right: 20px"></i>
+                                        </a>
+                                    </span>
+
+                                    <span>
+                                        <a asp-area="Manage" asp-controller="Promotion" asp-action="Delete" asp-route-id="@item.Id" onclick="return DeleteComfirm(event);" title="Delete promotion">
+                                            <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px;"></i>
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+                else
+                {
+                    <div style="font-size: 1em; color: #ff0000;">Have not promotion!</div>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function DeleteComfirm(event) {
+        if (!confirm("Are you delete this promotion?")) {
+            event.preventDefault();
+            return false;
+        }
+    }
+    setTimeout(function () {
+        $('#msgAlert').fadeOut('slow');
+    }, 2000);
+</script>

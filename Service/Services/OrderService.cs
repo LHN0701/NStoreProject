@@ -24,8 +24,33 @@ namespace Service.Services
 
             var member = _context.Members.FirstOrDefault(x => x.Id.Equals(input.UserId));
 
+            var discount = _context.Promotions.FirstOrDefault(x => x.Id.Equals(input.IdDisCount));
+
+            var discountPercent = 0;
+
+            if (discount != null)
+            {
+                discountPercent = discount.DiscountPercent;
+
+                //add id discount unique to memberpromotion
+
+                if (member.Promotions == null)
+                {
+                    member.Promotions = $",{discount.Id},";
+                }
+                else
+                {
+                    member.Promotions += $"{discount.Id},";
+                }
+
+                //minus discount amount
+                discount.DiscountAmount--;
+            }
+
             var order = new Order()
             {
+                DiliveryPrice = 2,
+                Discount = discountPercent,
                 OrderDate = DateTime.Now,
                 ShipAddress = input.Address,
                 ShipEmail = input.Email,
@@ -40,8 +65,8 @@ namespace Service.Services
                     ProductId = x.ProductId
                 }).ToList()
             };
-
             _context.Orders.Add(order);
+
             var save = _context.SaveChanges();
 
             if (save > 0)

@@ -10,8 +10,10 @@ namespace Service.Interfaces
 {
     public interface ICategory
     {
-        List<CategoryModel> GetAll();
+        GetAllCategory GetAll();
 
         Category GetById(int id);
+
+        CategoryModel GetProductCategory(int id);
     }
 }

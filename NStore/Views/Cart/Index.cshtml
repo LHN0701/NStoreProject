@@ -1,6 +1,9 @@
-﻿@{
+﻿@model PromotionModel.Output.GetPromotionClient
+
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 @section scripts{
@@ -48,8 +51,28 @@
             <td>$</td>
         </tr>
         <tr>
-            <td colspan="5" style="text-align:right">Total Discount:	</td>
-            <td>$</td>
+            <td colspan="2">
+                <form asp-controller="Cart" asp-action="Index" method="get">
+                    <input name="codePromotion" />
+                    <button type="submit">Apply</button>
+                </form>
+                @if (TempData["SuccessMsg"] != null)
+                {
+                    <span class="alert alert-success">@TempData["SuccessMsg"]</span>
+                }
+                <div asp-validation-summary="ModelOnly" class="text-error"></div>
+            </td>
+
+            <td colspan="3" style="text-align:right">Total Discount:	</td>
+            @if (Model != null)
+            {
+                <td id="discountpercent" data-discount="@Model.DiscountPercent">@Model.DiscountPercent %</td>
+            }
+            else
+            {
+                <td id="discountpercent" data-discount="0">%</td>
+
+            }
         </tr>
         <tr>
             <td colspan="5" style="text-align:right">Dilivery Price:	</td>
@@ -64,7 +87,20 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <a href="/Cart/CheckOut" class="btn btn-large pull-right">Next <i class="icon-arrow-right"></i></a>
+    if (Model != null)
+    {
+        <form asp-controller="Cart" asp-action="CheckOut" method="get">
+            <input type="hidden" name="IdDisCount" value="@Model.Id" />
+            <input type="hidden" name="DiscountPercent" value="@Model.DiscountPercent" />
+            <button type="submit" class="btn btn-large pull-right">Next<i class="icon-arrow-right"></i></button>
+        </form>
+    }
+    else
+    {
+
+        <a href="/Cart/CheckOut" class="btn btn-large pull-right">Next <i class="icon-arrow-right"></i></a>
+    }
+
 }
 else
 {

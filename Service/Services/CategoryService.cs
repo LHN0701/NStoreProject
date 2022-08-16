@@ -18,15 +18,26 @@ namespace Service.Services
             _context = context;
         }
 
-        public List<CategoryModel> GetAll()
+        public GetAllCategory GetAll()
         {
-            var query = _context.Categories.ToList();
-            var result = query.Select(x => new CategoryModel
+            var parent = _context.Categories.Where(x => x.ParentId == null);
+            var child = _context.Categories.Where(x => x.ParentId.HasValue);
+            var result = new GetAllCategory()
             {
-                Id = x.Id,
-                Name = x.Name,
-                ParentId = x.ParentId
-            }).ToList();
+                CategoryParent = parent.Select(x => new CategoryModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ParentId = x.ParentId
+                }).ToList(),
+
+                CategoryChild = child.Select(x => new CategoryModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ParentId = x.ParentId
+                }).ToList(),
+            };
             return result;
         }
 
@@ -35,6 +46,25 @@ namespace Service.Services
             var result = _context.Categories.FirstOrDefault(x => x.Id.Equals(id));
 
             return result;
+        }
+
+        public CategoryModel GetProductCategory(int id)
+        {
+            var productCategory = _context.ProductInCategories.FirstOrDefault(x => x.ProductId.Equals(id));
+
+            if (productCategory == null)
+            {
+                return new CategoryModel();
+            }
+
+            var category = _context.Categories.FirstOrDefault(x => x.Id.Equals(productCategory.CategoryId));
+
+            return new CategoryModel()
+            {
+                Id = productCategory.CategoryId,
+                Name = category.Name,
+                ParentId = category.ParentId
+            };
         }
     }
 }
