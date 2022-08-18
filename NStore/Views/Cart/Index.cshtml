@@ -17,7 +17,7 @@
 }
 
 <ul class="breadcrumb">
-    <li><a href="index.html">Home</a> <span class="divider">/</span></li>
+    <li><a href="/Home/Index">Home</a> <span class="divider">/</span></li>
     <li class="active"> SHOPPING CART</li>
 </ul>
 <h3>  SHOPPING CART [ <small><span id="lbl_number_items"></span> Item(s) </small>]<a href="/Home/Index" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>
@@ -34,21 +34,25 @@
         </tr>
     </thead>
     <tbody id="cart_body">
-        <tr>
-            <td> <img width="60" src="themes/images/products/4.jpg" alt="" /></td>
-            <td>MASSA AST<br />Color : black, Material : metal</td>
-            <td>
-                <div class="input-append"><input class="span1" style="max-width:34px" placeholder="1" id="appendedInputButtons" size="16" type="text"><button class="btn" type="button"><i class="icon-minus"></i></button><button class="btn" type="button"><i class="icon-plus"></i></button><button class="btn btn-danger" type="button"><i class="icon-remove icon-white"></i></button>				</div>
-            </td>
-            <td>$120.00</td>
-            <td>$25.00</td>
-            <td>$110.00</td>
-        </tr>
+        @*<tr>
+                <td> <img width="60" src="themes/images/products/4.jpg" alt="" /></td>
+                <td>MASSA AST<br />Color : black, Material : metal</td>
+                <td>
+                    <div class="input-append"><input class="span1" style="max-width:34px" placeholder="1" id="appendedInputButtons" size="16" type="text"><button class="btn" type="button"><i class="icon-minus"></i></button><button class="btn" type="button"><i class="icon-plus"></i></button><button class="btn btn-danger" type="button"><i class="icon-remove icon-white"></i></button>				</div>
+                </td>
+                <td>$120.00</td>
+                <td>$25.00</td>
+                <td>$110.00</td>
+            </tr>*@
     </tbody>
     <tfoot>
         <tr>
             <td colspan="5" style="text-align:right">Total Price:	</td>
-            <td>$</td>
+            <td><span id="lbl_total_product"></span>$</td>
+        </tr>
+        <tr>
+            <td colspan="5" style="text-align:right">Dilivery Price:	</td>
+            <td id="diliveryprice" data-dilivery="2">$2</td>
         </tr>
         <tr>
             <td colspan="2">
@@ -75,12 +79,8 @@
             }
         </tr>
         <tr>
-            <td colspan="5" style="text-align:right">Dilivery Price:	</td>
-            <td id="diliveryprice" data-dilivery="2">$2</td>
-        </tr>
-        <tr>
             <td colspan="5" style="text-align:right"><strong>TOTAL =</strong></td>
-            <td class="label label-important" style="display:block"> <strong><span id="lbl_total"></span></strong></td>
+            <td class="label label-important" style="display:block"> <strong><span id="lbl_total"></span>$</strong></td>
         </tr>
     </tfoot>
 </table>

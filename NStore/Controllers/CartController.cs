@@ -137,6 +137,17 @@ namespace NStore.Controllers
         [HttpPost]
         public IActionResult CheckOut(CheckOutModel request)
         {
+            if (request.CheckoutModel.Name == null || request.CheckoutModel.PhoneNumber == null || request.CheckoutModel.Address == null || request.CheckoutModel.Email == null)
+            {
+                ModelState.AddModelError("", "Please enter all infomation");
+                return View(new CheckOutModel()
+                {
+                    CartItems = GetCheckoutViewModel().CartItems,
+                    CheckoutModel = new CheckOutRequest(),
+                    DiscountPercent = request.DiscountPercent,
+                    IdDisCount = request.IdDisCount
+                });
+            }
             var memberId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "MEMBERID").Value);
             var model = GetCheckoutViewModel();
             var orderDetails = new List<OrderDetailModel>();

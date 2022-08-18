@@ -1,0 +1,181 @@
+﻿@model List<OrderModel.Output.GetOrder>
+@{
+    ViewData["Title"] = "GetAllOrder";
+    Layout = "~/Areas/Manage/Views/Shared/_LayoutBackend.cshtml";
+    string status = "";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">List order</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/Manage">Home page</a></li>
+        <li class="breadcrumb-item active">List order</li>
+    </ol>
+
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-area="Manage" asp-action="Index" asp-controller="Home">Home</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+            </div>
+            <div style="overflow-x:scroll;">
+                <table class="table" id="">
+                    <thead>
+                        <tr>
+                            <th>
+                                Code Order
+                            </th>
+                            <th>
+                                User Name
+                            </th>
+                            <th>
+                                Order Date
+                            </th>
+                            <th>
+                                ShipName
+                            </th>
+                            <th>
+                                ShipAddress
+                            </th>
+                            <th>
+                                ShipEmail
+                            </th>
+                            <th>
+                                ShipPhoneNumber
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Dilivery Price
+                            </th>
+                            <th>
+                                Discount
+                            </th>
+                            <th>
+                                ProductName
+                            </th>
+                            <th>
+                                Quantity
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th>
+                                Total price
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @if (Model.Count > 0)
+                    {
+                        var stt = 0;
+
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                decimal totalPrice = 0;
+                                var deliveryPrice = @item.Order.DiliveryPrice ?? default(decimal);
+                                int discountPercent = @item.Order.Discount ?? default(int);
+                                foreach (var orderdetail in item.OrderDetails)
+                                {
+                                    totalPrice += orderdetail.Price * orderdetail.Quantity;
+                                }
+
+                                totalPrice = totalPrice - deliveryPrice;
+
+                                if (discountPercent != 0)
+                                {
+                                    totalPrice = totalPrice - (totalPrice * discountPercent / 100);
+                                }
+
+                                <tr>
+                                    <td data-title="Series"><span>@item.Order.Id</span></td>
+                                    <td data-title="UserName"><span>@item.Order.UserName</span></td>
+                                    <td data-title="OrderDate"><span>@item.Order.OrderDate.ToString("dd/MM/yyyy")</span></td>
+                                    <td data-title="ShipName"><span>@item.Order.ShipName</span></td>
+                                    <td data-title="ShipAddress"><span>@item.Order.ShipAddress</span></td>
+                                    <td data-title="ShipEmail"><span>@item.Order.ShipEmail</span></td>
+                                    <td data-title="ShipPhoneNumber"><span>@item.Order.ShipPhoneNumber</span></td>
+                                    @if (item.Order.Status == 1)
+                                    {
+                                        status = "Delivering";
+                                    }
+                                    else
+                                    {
+                                        status = "Received";
+
+                                    }
+                                    <td data-title="Status"><span>@status</span></td>
+                                    <td data-title="DiliveryPrice"><span>@item.Order.DiliveryPrice</span></td>
+                                    <td data-title="Discount"><span>@item.Order.Discount</span></td>
+                                    <td data-title="ProductName">
+                                        @foreach (var orderdetail in item.OrderDetails)
+                                        {
+                                            <span>@orderdetail.ProductName</span><br /> <br /> <br />
+                                        }
+                                    </td>
+                                    <td data-title="Quantity">
+                                        @foreach (var orderdetail in item.OrderDetails)
+                                        {
+                                            <span>@orderdetail.Quantity</span><br /> <br /> <br />
+                                        }
+                                    </td>
+
+                                    <td data-title="Price">
+                                        @foreach (var orderdetail in item.OrderDetails)
+                                        {
+                                            <span>@orderdetail.Price</span><br /> <br /> <br />
+                                        }
+                                    </td>
+                                    <td data-title="TotalPrice"><span>@totalPrice</span></td>
+                                    <td data-title="">
+                                        @*<span>
+                                                <a asp-area="Manage" asp-controller="Promotion" asp-action="Update" asp-route-id="@item.Id" title="Update promotion">
+                                                    <i class="fa fa-bars" aria-hidden="true" style="font-size: 16px; margin-right: 20px"></i>
+                                                </a>
+                                            </span>*@
+
+                                        <span>
+                                            <a asp-area="Manage" asp-controller="Order" asp-action="DeleteOrder" asp-route-id="@item.Order.Id" onclick="return DeleteComfirm(event);" title="Delete order">
+                                                <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px;"></i>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                    else
+                    {
+                        <div style="font-size: 1em; color: #ff0000;">Have not order!</div>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function DeleteComfirm(event) {
+        if (!confirm("Are you delete this order?")) {
+            event.preventDefault();
+            return false;
+        }
+    }
+    setTimeout(function () {
+        $('#msgAlert').fadeOut('slow');
+    }, 2000);
+</script>

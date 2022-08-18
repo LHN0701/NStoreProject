@@ -117,7 +117,7 @@
                     @await Component.InvokeAsync("Search")
 
                     <ul id="topMenu" class="nav pull-right">
-                        <li class=""><a href="special_offer.html">Specials Offer</a></li>
+                        <li class=""><a href="#">Specials Offer</a></li>
                         <li class=""><a href="/Home/Delivery">Delivery</a></li>
                         <li class=""><a href="/Home/Contact">Contact</a></li>
                         <li class="">
@@ -134,7 +134,7 @@
                                     <div class="dropdown-content" id="myDropdown">
                                         @if (User.Claims.FirstOrDefault(x => x.Type == "ROLE").Value == "member")
                                         {
-                                            <a href="#">Order</a>
+                                            <a asp-action="GetOrder" asp-controller="Order" asp-route-MemberId="@User.Claims.FirstOrDefault(x => x.Type == "MEMBERID").Value">Order</a>
                                             <a asp-action="ChangePassword" asp-controller="Member" asp-route-Email="@User.Claims.FirstOrDefault(x => x.Type == "EMAIL").Value">Change password</a>
                                         }
                                         <a href="/Member/Logout">Logout</a>

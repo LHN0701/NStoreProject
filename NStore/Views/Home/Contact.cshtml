@@ -2,17 +2,38 @@
     ViewData["Title"] = "Contact";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+
+    #map {
+        width: 100%;
+        height: 400px;
+    }
+</style>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<!-- playground-hide -->
+<script>
+    const process = { env: {} };
+    process.env.GOOGLE_MAPS_API_KEY =
+        "AIzaSyAcQul87Ay8GhaPw6NTkqsmRc82lou0hKo";
+</script>
+<!-- playground-hide-end -->
+
+<link rel="stylesheet" type="text/css" href="./style.css" />
+<script type="module" src="./index.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcQul87Ay8GhaPw6NTkqsmRc82lou0hKo&callback=initMap&v=weekly"
+        defer></script>
 
 <div class="row">
     <div class="span5">
         <h4>Contact Details</h4>
         <p>
-            18 Fresno,<br /> CA 93727, USA
+            37/10, street 41<br /> Linh Dong Ward, Thu Duc City, HCM City
             <br /><br />
-            info@bootsshop.com<br />
+            nstore.work@gmail.com<br />
             ﻿Tel 123-456-6780<br />
             Fax 123-456-5679<br />
-            web:bootsshop.com
+            web:Nstore.com
         </p>
     </div>
 
@@ -50,9 +71,50 @@
         </form>
     </div>
 </div>
-<div class="row">
-    <div class="span9">
-        <iframe style="width:100%; height:300; border: 0px" scrolling="no" src="https://maps.google.co.uk/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=18+California,+Fresno,+CA,+United+States&amp;aq=0&amp;oq=18+California+united+state&amp;sll=39.9589,-120.955336&amp;sspn=0.007114,0.016512&amp;ie=UTF8&amp;hq=&amp;hnear=18,+Fresno,+California+93727,+United+States&amp;t=m&amp;ll=36.732762,-119.695787&amp;spn=0.017197,0.100336&amp;z=14&amp;output=embed"></iframe><br />
-        <small><a href="https://maps.google.co.uk/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=18+California,+Fresno,+CA,+United+States&amp;aq=0&amp;oq=18+California+united+state&amp;sll=39.9589,-120.955336&amp;sspn=0.007114,0.016512&amp;ie=UTF8&amp;hq=&amp;hnear=18,+Fresno,+California+93727,+United+States&amp;t=m&amp;ll=36.732762,-119.695787&amp;spn=0.017197,0.100336&amp;z=14" style="color:#0000FF;text-align:left">View Larger Map</a></small>
-    </div>
-</div>
+
+<div id="map"></div>
+
+<script>
+    function initMap() {
+        const NStore = { lat: 10.850258, lng: 106.754014 };
+        const map = new google.maps.Map(
+            document.getElementById("map"),
+            {
+                zoom: 18,
+                center: NStore,
+            }
+        );
+
+        const contentString =
+            '<div id="content">' +
+            '<div id="siteNotice">' +
+            "</div>" +
+            '<h1 id="firstHeading" class="firstHeading">NStore</h1>' +
+            '<div id="bodyContent">' +
+            "<p><b></b>" +
+            "Electronics store" +
+            "</p>" +
+            "</div>" +
+            "</div>";
+
+        const infowindow = new google.maps.InfoWindow({
+            content: contentString,
+        });
+
+        const marker = new google.maps.Marker({
+            position: NStore,
+            map,
+            title: "Uluru (Ayers Rock)",
+        });
+
+        marker.addListener("click", () => {
+            infowindow.open({
+                anchor: marker,
+                map,
+                shouldFocus: false,
+            });
+        });
+    }
+
+    window.initMap = initMap;
+</script>

@@ -1,0 +1,153 @@
+﻿@model List<OrderModel.Output.GetOrder>
+@{
+    ViewData["Title"] = "GetOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string status = "";
+}
+
+<div class="row">
+    @if (ViewBag.SuccessMsg != null)
+    {
+        <div id="msgAlert" class="alert alert-success" role="alert">
+            @ViewBag.SuccessMsg
+        </div>
+    }
+</div>
+<div style="overflow-x:scroll;">
+    <table class="table span9" id="">
+        <thead>
+            <tr>
+                <th>
+                    Series
+                </th>
+                <th>
+                    Order Date
+                </th>
+                <th>
+                    ShipName
+                </th>
+                <th>
+                    ShipAddress
+                </th>
+                <th>
+                    ShipPhoneNumber
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Dilivery Price
+                </th>
+                <th>
+                    Discount
+                </th>
+                <th>
+                    ProductName
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Total price
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        @if (Model.Count > 0)
+        {
+            var stt = 0;
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    stt++;
+                    decimal totalPrice = 0;
+                    var deliveryPrice = @item.Order.DiliveryPrice ?? default(decimal);
+                    int discountPercent = @item.Order.Discount ?? default(int);
+                    foreach (var orderdetail in item.OrderDetails)
+                    {
+                        totalPrice += orderdetail.Price * orderdetail.Quantity;
+                    }
+
+                    totalPrice = totalPrice - deliveryPrice;
+
+                    if (discountPercent != 0)
+                    {
+                        totalPrice = totalPrice - (totalPrice * discountPercent / 100);
+                    }
+
+                    <tr>
+                        <td data-title="Series"><span>@stt</span></td>
+                        <td data-title="OrderDate"><span>@item.Order.OrderDate.ToString("dd/MM/yyyy")</span></td>
+                        <td data-title="ShipName"><span>@item.Order.ShipName</span></td>
+                        <td data-title="ShipAddress"><span>@item.Order.ShipAddress</span></td>
+                        <td data-title="ShipPhoneNumber"><span>@item.Order.ShipPhoneNumber</span></td>
+                        @if (item.Order.Status == 1)
+                        {
+                            status = "Delivering";
+                        }
+                        else
+                        {
+                            status = "Received";
+
+                        }
+                        <td data-title="Status"><span>@status</span></td>
+                        <td data-title="DiliveryPrice"><span>@item.Order.DiliveryPrice</span></td>
+                        <td data-title="Discount"><span>@item.Order.Discount</span></td>
+                        <td data-title="ProductName">
+                            @foreach (var orderdetail in item.OrderDetails)
+                            {
+                                <span>@orderdetail.ProductName</span><br /> <br /> <br />
+                            }
+                        </td>
+                        <td data-title="Quantity">
+                            @foreach (var orderdetail in item.OrderDetails)
+                            {
+                                <span>@orderdetail.Quantity</span><br /> <br /> <br />
+                            }
+                        </td>
+
+                        <td data-title="Price">
+                            @foreach (var orderdetail in item.OrderDetails)
+                            {
+                                <span>@orderdetail.Price</span><br /> <br /> <br />
+                            }
+                        </td>
+                        <td data-title="TotalPrice"><span>@totalPrice</span></td>
+                        @if (item.Order.Status == 1)
+                        {
+                            <td data-title="">
+                                <form class="form-inline navbar-search ms-3 mt-3" asp-controller="Order" asp-action="GetOrder" method="get">
+                                    <input type="hidden" name="MemberId" value="@User.Claims.FirstOrDefault(x => x.Type == "MEMBERID").Value" />
+                                    <input type="hidden" name="OrderId" value="@item.Order.Id" />
+                                    <input type="hidden" name="Status" value="2" />
+                                    <button type="submit" id="submitButton" class="btn btn-primary">Received</button>
+                                </form>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        }
+        else
+        {
+            <div style="font-size: 1em; color: #ff0000;">Have not order!</div>
+        }
+    </table>
+</div>
+
+<script>
+
+    function DeleteComfirm(event) {
+        if (!confirm("Are you delete this order?")) {
+            event.preventDefault();
+            return false;
+        }
+    }
+    setTimeout(function () {
+        $('#msgAlert').fadeOut('slow');
+    }, 2000);
+</script>

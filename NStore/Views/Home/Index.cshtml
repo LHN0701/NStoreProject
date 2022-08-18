@@ -108,7 +108,7 @@
                                         <i class="tag"></i>
                                         <a href="@("Product/Detail?productId=" + item.Id)"><img id="image" src="@("https://localhost:5001" + item.ImagePath)" alt="@item.Name"></a>
                                         <div class="caption">
-                                            <h5 id="twoline">@item.Name</h5>
+                                            <h5 id="twoline"><a href="@("Product/Detail?productId=" + item.Id)">@item.Name</a></h5>
                                             <h4><a class="btn" href="@("Product/Detail?productId=" + item.Id)">VIEW</a> <span class="pull-right">$ @item.Price.ToString()</span></h4>
                                         </div>
                                     </div>
@@ -132,7 +132,7 @@
             <div class="thumbnail">
                 <a href="@("Product/Detail?productId=" + item.Id)"><img id="image" src="@("https://localhost:5001" + item.ImagePath)" alt="@item.Name" /></a>
                 <div class="caption">
-                    <h5 id="twoline">@item.Name</h5>
+                    <h5 id="twoline"><a href="@("Product/Detail?productId=" + item.Id)">@item.Name</a></h5>
                     @*<p id="oneline">
                             @item.Description
                         </p>*@
@@ -144,8 +144,8 @@
                     </div>
 
                     <h4 style="text-align:center">
-                        <a class="btn" href="">
-                            <i class="icon-zoom-in"></i>
+                        <a class="btn" href="@("Product/Detail?productId=" + item.Id)">
+                            <i class="icon-zoom-in" href="@("Product/Detail?productId=" + item.Id)"></i>
                         </a> <a class="btn btn-add-cart" data-id="@item.Id" href="#"><localize>Add to</localize> <i class="icon-shopping-cart"></i></a>
                         <a class="btn btn-primary" href="@("Product/Detail?productId=" + item.Id)">$ @item.Price</a>
                     </h4>

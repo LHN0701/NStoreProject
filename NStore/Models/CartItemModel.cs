@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,12 +30,22 @@ namespace NStore.Models
         public int UserId { get; set; }
         public int IdDisCount { get; set; }
 
+        [Required(ErrorMessage = "Please enter your name.")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Please enter your Address.")]
+        [Display(Name = "Address")]
         public string Address { get; set; }
 
+        [Required(ErrorMessage = "Please enter your email.")]
+        [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Invalid email.")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Please enter your PhoneNumber.")]
+        [Display(Name = "PhoneNumber")]
         public string PhoneNumber { get; set; }
 
         public List<OrderDetailModel> OrderDetails { set; get; } = new List<OrderDetailModel>();
