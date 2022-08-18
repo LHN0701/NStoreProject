@@ -11,7 +11,7 @@ namespace NStore.Controllers
 {
     public class ProductController : Controller
     {
-        public IActionResult Index(string keyword, int? categoryId, int pageIndex = 1, int pageSize = 10)
+        public IActionResult Index(string keyword, int? categoryId, int pageIndex = 1, int pageSize = 9)
         {
             if (categoryId == 0)
             {

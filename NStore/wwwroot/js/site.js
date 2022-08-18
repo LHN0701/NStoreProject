@@ -15,6 +15,9 @@
                     numberItem += item.quantity;
                     priceItem += item.price * item.quantity;
                 });
+
+                priceItem = Math.round(priceItem * 100) / 100;
+
                 $('.lbl_number_items_header').text(numberItem);
                 $('.lbl_price_items_header').text("$" + priceItem);
             }
@@ -40,6 +43,9 @@
                         numberItem += item.quantity;
                         priceItem += item.price * item.quantity;
                     });
+
+                    priceItem = Math.round(priceItem * 100) / 100;
+
                     $('.lbl_number_items_header').text(numberItem);
                     $('.lbl_price_items_header').text("$" + priceItem);
                 },

@@ -103,11 +103,11 @@
                 <div class="span4">
                     <h3><localize>New | Available</localize></h3>
                     <hr class="soft" />
-                    <h5>@item.Name</h5>
+                    <h5><a href="@("/Product/Detail?productId=" + item.Id)">@item.Name</a></h5>
                     <p>
                         @item.Description
                     </p>
-                    <a class="btn btn-small pull-right" href="@("/Product/Detail?productId=" + item.Id)"><localize>Xem chi tiết</localize></a>
+                    <a class="btn btn-small pull-right" href="@("/Product/Detail?productId=" + item.Id)"><localize>Details</localize></a>
                     <br class="clr" />
                 </div>
                 <div class="span3 alignR">
@@ -134,7 +134,7 @@
                     <div class="thumbnail">
                         <a href="@("/Product/Detail?productId=" + item.Id)"><img src="@("https://localhost:5001" + item.ImagePath)" alt="@item.Name" /></a>
                         <div class="caption">
-                            <h5>@item.Name</h5>
+                            <h5><a href="@("/Product/Detail?productId=" + item.Id)">@item.Name</a></h5>
                             <p class="user__name">
                                 @item.Description
                             </p>

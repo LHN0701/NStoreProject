@@ -30,5 +30,39 @@ namespace NStoreAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("GetAll")]
+        public IActionResult GetAll()
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = _iOrder.GetAll();
+
+            return Ok(result);
+        }
+
+        [HttpPost("GetById")]
+        public IActionResult GetById(OrderModel.Input.GetOrder request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = _iOrder.GetById(request);
+
+            return Ok(result);
+        }
+
+        [HttpPost("DeleteOrder")]
+        public IActionResult DeleteOrder(OrderModel.Input.DeteleOrder request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = _iOrder.DeleteOrder(request);
+
+            return Ok(result);
+        }
     }
 }

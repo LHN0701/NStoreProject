@@ -42,6 +42,9 @@
                     numberItem += item.quantity;
                     priceItem += item.quantity * item.price
                 });
+
+                priceItem = Math.round(priceItem * 100) / 100;
+
                 $('.lbl_number_items_header').text(numberItem);
                 $('.lbl_price_items_header').text("$" + priceItem);
 
@@ -60,6 +63,7 @@
             success: function (res) {
                 var html = '';
                 var total = 0;
+                var totalProduct = 0;
                 var numberItem = 0;
                 var elementDilivery = document.getElementById('diliveryprice');
                 var diliveryPrice = elementDilivery.getAttribute('data-dilivery');
@@ -69,6 +73,7 @@
 
                 $.each(res, function (i, item) {
                     var amount = item.price * item.quantity;
+                    amount = Math.round(amount * 100) / 100;
                     numberItem += item.quantity;
                     html += "<tr>"
                         + "<td> <img width=\"60\" src=\"" + $('#hidBaseAddress').val() + item.image + "\" alt=\"\" /></td>"
@@ -80,17 +85,19 @@
                         + "</div>"
                         + "</td>"
                         + "<td>" + numberWithCommas(item.price) + "</td>"
-                        + "<td>" + numberWithCommas(10) + "</td>"
+                        + "<td>" + numberWithCommas(0) + "</td>"
                         + "<td>" + numberWithCommas(amount) + "</td>"
                         + "</tr>";
                     total += amount;
+                    totalProduct += amount;
                 });
 
                 total -= diliveryPrice;
 
                 $('#cart_body').html(html);
                 $('#lbl_number_items').text(numberItem);
-                $('#lbl_total').text(numberWithCommas(total - (total * discountPercent / 100)));
+                $('#lbl_total_product').text(Math.round((totalProduct) * 100) / 100);
+                $('#lbl_total').text(numberWithCommas(Math.round((total - (total * discountPercent / 100)) * 100) / 100));
             }
         })
     }

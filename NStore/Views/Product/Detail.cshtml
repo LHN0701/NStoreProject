@@ -25,18 +25,30 @@
         </a>
         <div id="differentview" class="moreOptopm carousel slide">
             <div class="carousel-inner">
-                <div class="item active">
-                    @foreach (var item in Model.ProductImages)
-                    {
-                        <a href="@("https://localhost:5001" + item.ImagePath)"> <img style="width:29%" src="@("https://localhost:5001" + item.ImagePath)" alt="" /></a>
-                    }
-                </div>
-                <div class="item">
-                    @foreach (var item in Model.ProductImages)
-                    {
-                        <a href="@("https://localhost:5001" + item.ImagePath)"> <img style="width:29%" src="@("https://localhost:5001" + item.ImagePath)" alt="" /></a>
-                    }
-                </div>
+                @if (Model.ProductImages.Count > 3)
+                {
+                    <div class="item active">
+                        @for (var i = 0; i < 3; i++)
+                        {
+                            <a href="@("https://localhost:5001" + Model.ProductImages[i].ImagePath)"> <img style="width: 29%; height: 70px" src="@("https://localhost:5001" + Model.ProductImages[i].ImagePath)" alt="" /></a>
+                        }
+                    </div>
+                    <div class="item">
+                        @for (var i = 3; i < Model.ProductImages.Count; i++)
+                        {
+                            <a href="@("https://localhost:5001" + Model.ProductImages[i].ImagePath)"> <img style="width: 29%; height: 70px" src="@("https://localhost:5001" + Model.ProductImages[i].ImagePath)" alt="" /></a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="item active">
+                        @for (var i = 0; i < Model.ProductImages.Count; i++)
+                        {
+                            <a href="@("https://localhost:5001" + Model.ProductImages[i].ImagePath)"> <img style="width: 29%; height: 70px" src="@("https://localhost:5001" + Model.ProductImages[i].ImagePath)" alt="" /></a>
+                        }
+                    </div>
+                }
             </div>
             @*<a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
                 <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>*@

@@ -69,6 +69,10 @@ namespace NStore.Common
         public class Order
         {
             public const string CreateOrder = "api/Orders/CreateOrder";
+
+            public const string GetAll = "api/Orders/GetAll";
+            public const string GetById = "api/Orders/GetById";
+            public const string DeleteOrder = "api/Orders/DeleteOrder";
         }
 
         public class Promotion

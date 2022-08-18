@@ -387,7 +387,8 @@ namespace Service.Services
             if (request.IsDefault == true)
             {
                 var imageDefault = listImage.FirstOrDefault(x => x.IsDefault.Equals(true));
-                imageDefault.IsDefault = false;
+                if(imageDefault != null)
+                    imageDefault.IsDefault = false;
 
                 request.SortOrder = 1;
 
