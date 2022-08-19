@@ -84,5 +84,11 @@ namespace NStore.Common
             public const string UpdatePromotion = "api/Promotion/UpdatePromotion";
             public const string DeletePromotion = "api/Promotion/DeletePromotion";
         }
+
+        public class Chart
+        {
+            public const string SaleSixMon = "api/DataChart/SaleSixMon";
+            public const string ExpenseAndSale = "api/DataChart/ExpenseAndSale";
+        }
     }
 }

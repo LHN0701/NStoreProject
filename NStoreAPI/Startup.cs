@@ -48,6 +48,7 @@ namespace NStoreAPI
             services.AddScoped<ISlide, SlideService>();
             services.AddScoped<IOrder, OrderService>();
             services.AddScoped<IPromotion, PromotionService>();
+            services.AddScoped<IChart, ChartService>();
 
             services.AddControllers();
             services.AddMemoryCache();
