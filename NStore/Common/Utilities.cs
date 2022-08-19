@@ -65,8 +65,8 @@ namespace NStore.Common
         public static T SendDataRequest<T>(string ApiUrl, object input = null)
         {
             //var thanhvien = HttpContext.Session.Get<ThanhVienModel.Output.ThongTinThanhVien>("ThanhVien");
-            var thanhvien = AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("ThanhVien");
-            var nhanvien = AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
+            var thanhvien = AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("Member");
+            var nhanvien = AppContext.Current.Session.Get<UserModel.Output.UserInfo>("User");
             HttpClient client = new();
             client.BaseAddress = new Uri("https://localhost:5001");
             client.DefaultRequestHeaders.Accept.Clear();
