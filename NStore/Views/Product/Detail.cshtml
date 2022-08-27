@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
 @section scripts{
     <script src="/js/site.js"></script>
     <script>
@@ -20,8 +22,8 @@
 
 <div class="row">
     <div id="gallery" class="span3">
-        <a href="@("https://localhost:5001" + Model.ImagePath)" title="@Model.Name">
-            <img src="@("https://localhost:5001" + Model.ImagePath)" style="width:100%" alt="@Model.Name" />
+        <a href="@(Configuration["BaseAddress"] + Model.ImagePath)" title="@Model.Name">
+            <img src="@(Configuration["BaseAddress"] + Model.ImagePath)" style="width:100%" alt="@Model.Name" />
         </a>
         <div id="differentview" class="moreOptopm carousel slide">
             <div class="carousel-inner">
@@ -30,13 +32,13 @@
                     <div class="item active">
                         @for (var i = 0; i < 3; i++)
                         {
-                            <a href="@("https://localhost:5001" + Model.ProductImages[i].ImagePath)"> <img style="width: 29%; height: 70px" src="@("https://localhost:5001" + Model.ProductImages[i].ImagePath)" alt="" /></a>
+                            <a href="@(Configuration["BaseAddress"] + Model.ProductImages[i].ImagePath)"> <img style="width: 29%; height: 70px" src="@(Configuration["BaseAddress"] + Model.ProductImages[i].ImagePath)" alt="" /></a>
                         }
                     </div>
                     <div class="item">
                         @for (var i = 3; i < Model.ProductImages.Count; i++)
                         {
-                            <a href="@("https://localhost:5001" + Model.ProductImages[i].ImagePath)"> <img style="width: 29%; height: 70px" src="@("https://localhost:5001" + Model.ProductImages[i].ImagePath)" alt="" /></a>
+                            <a href="@(Configuration["BaseAddress"] + Model.ProductImages[i].ImagePath)"> <img style="width: 29%; height: 70px" src="@(Configuration["BaseAddress"] + Model.ProductImages[i].ImagePath)" alt="" /></a>
                         }
                     </div>
                 }
@@ -45,7 +47,7 @@
                     <div class="item active">
                         @for (var i = 0; i < Model.ProductImages.Count; i++)
                         {
-                            <a href="@("https://localhost:5001" + Model.ProductImages[i].ImagePath)"> <img style="width: 29%; height: 70px" src="@("https://localhost:5001" + Model.ProductImages[i].ImagePath)" alt="" /></a>
+                            <a href="@(Configuration["BaseAddress"] + Model.ProductImages[i].ImagePath)"> <img style="width: 29%; height: 70px" src="@(Configuration["BaseAddress"] + Model.ProductImages[i].ImagePath)" alt="" /></a>
                         }
                     </div>
                 }

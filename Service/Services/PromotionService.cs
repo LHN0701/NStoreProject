@@ -41,7 +41,7 @@ namespace Service.Services
 
         public PromotionModel.Output.GetPromotionClient GetPromotionClient(PromotionModel.Input.GetPromotionClient request)
         {
-            var promotion = _context.Promotions.FirstOrDefault(x => x.Name.Equals(request.Name) && x.ApplyForAll.Equals(true));
+            var promotion = _context.Promotions.FirstOrDefault(x => x.Name.Equals(request.Name) && x.ApplyForAll.Equals(true) && x.DiscountAmount != 0);
 
             if (promotion == null)
             {
@@ -68,16 +68,7 @@ namespace Service.Services
                 }
             }
 
-            if (promotion == null)
-            {
-                return new PromotionModel.Output.GetPromotionClient()
-                {
-                    IsSuccess = false,
-                    Noteti = "Promotion expire!"
-                };
-            }
-
-            if (DateTime.Compare(DateTime.Now, promotion.ToDate) > 0)
+            if (DateTime.Compare(DateTime.Now, promotion.ToDate) > 0 || promotion == null)
             {
                 return new PromotionModel.Output.GetPromotionClient()
                 {

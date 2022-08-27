@@ -82,7 +82,9 @@
     </style>
 </head>
 <body>
-    <input type="hidden" id="hidBaseAddress" value="https://localhost:5001" />
+    @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
+    <input type="hidden" id="hidBaseAddress" value="@Configuration["BaseAddress"]" />
 
     <div id="header">
         <div class="container">

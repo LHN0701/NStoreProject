@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using NStore.Common;
 using NStore.Models;
 using System;
@@ -20,7 +21,7 @@ namespace NStore.ApiRequest
             var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
-            client.BaseAddress = new Uri("https://localhost:5001");
+            client.BaseAddress = new Uri(SystemConstants.AppSetting.BaseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
             if (thanhvien != null)
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", thanhvien.AccessToken);
@@ -62,7 +63,7 @@ namespace NStore.ApiRequest
             var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
-            client.BaseAddress = new Uri("https://localhost:5001");
+            client.BaseAddress = new Uri(SystemConstants.AppSetting.BaseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
             if (thanhvien != null)
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", thanhvien.AccessToken);
@@ -105,7 +106,7 @@ namespace NStore.ApiRequest
             var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
-            client.BaseAddress = new Uri("https://localhost:5001");
+            client.BaseAddress = new Uri(SystemConstants.AppSetting.BaseAddress);
             if (thanhvien != null)
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", thanhvien.AccessToken);
             else if (nhanvien != null)
@@ -134,7 +135,7 @@ namespace NStore.ApiRequest
             var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
-            client.BaseAddress = new Uri("https://localhost:5001");
+            client.BaseAddress = new Uri(SystemConstants.AppSetting.BaseAddress);
             if (thanhvien != null)
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", thanhvien.AccessToken);
             else if (nhanvien != null)
@@ -157,7 +158,7 @@ namespace NStore.ApiRequest
             var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
-            client.BaseAddress = new Uri("https://localhost:5001");
+            client.BaseAddress = new Uri(SystemConstants.AppSetting.BaseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
             if (thanhvien != null)
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", thanhvien.AccessToken);
@@ -196,7 +197,7 @@ namespace NStore.ApiRequest
             var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
-            client.BaseAddress = new Uri("https://localhost:5001");
+            client.BaseAddress = new Uri(SystemConstants.AppSetting.BaseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
             if (thanhvien != null)
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", thanhvien.AccessToken);

@@ -185,12 +185,22 @@ namespace Service.Services
         public async Task<ProductModel.Output.DeleteProduct> Detele(int productId)
         {
             var product = await _context.Products.FindAsync(productId);
+            var orderDetail = await _context.OrderDetails.FirstOrDefaultAsync(x => x.ProductId.Equals(productId));
             if (product == null)
             {
                 return new ProductModel.Output.DeleteProduct()
                 {
                     IsSuccessed = false,
-                    Noteti = "Không tìm thấy sản phẩm"
+                    Noteti = "Can not find product!"
+                };
+            }
+
+            if (orderDetail != null)
+            {
+                return new ProductModel.Output.DeleteProduct()
+                {
+                    IsSuccessed = false,
+                    Noteti = "Customer ordered this product!"
                 };
             }
 
@@ -224,7 +234,7 @@ namespace Service.Services
             return new ProductModel.Output.DeleteProduct()
             {
                 IsSuccessed = false,
-                Noteti = "Xóa sản phẩm thất bại"
+                Noteti = "Delete product fail!"
             };
         }
 
@@ -236,7 +246,7 @@ namespace Service.Services
                 return new ProductModel.Output.CategoryAssign()
                 {
                     IsSuccessed = false,
-                    Noteti = $"Không tìm thấy sản phẩm có id = {id}"
+                    Noteti = $"Can not find product id = {id}"
                 };
             }
 
@@ -387,7 +397,7 @@ namespace Service.Services
             if (request.IsDefault == true)
             {
                 var imageDefault = listImage.FirstOrDefault(x => x.IsDefault.Equals(true));
-                if(imageDefault != null)
+                if (imageDefault != null)
                     imageDefault.IsDefault = false;
 
                 request.SortOrder = 1;

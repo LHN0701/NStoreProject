@@ -4,10 +4,12 @@
     Layout = "~/Areas/Manage/Views/Shared/_LayoutBackend.cshtml";
 }
 
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
 <div class="container-fluid px-4">
     <h1 class="mt-4">Details</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Home page</a></li>
+        <li class="breadcrumb-item"><a href="/Manage">Home page</a></li>
         <li class="breadcrumb-item active">Details</li>
     </ol>
 
@@ -30,8 +32,8 @@
                     <dd class="col-sm-10">
                         <div class="col-sm-7 col-md-9">
                             <input asp-for="Id" type="hidden" />
-                            <a href="@("https://localhost:5001" + Model.ImagePath)" title="@Model.Name">
-                                <img src="@("https://localhost:5001" + Model.ImagePath)" id="imgThumbnail" class="img-responsive" style="margin-top: 5px; width: 200px; height: auto;" />
+                            <a href="@(Configuration["BaseAddress"] + Model.ImagePath)" title="@Model.Name">
+                                <img src="@(Configuration["BaseAddress"] + Model.ImagePath)" id="imgThumbnail" class="img-responsive" style="margin-top: 5px; width: 200px; height: auto;" />
                             </a>
                         </div>
                     </dd>

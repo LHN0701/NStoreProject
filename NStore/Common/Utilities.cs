@@ -46,29 +46,13 @@ namespace NStore.Common
             }
         }
 
-        public static object SendDataRequest(string ApiUrl, object input = null)
-        {
-            HttpClient client = new();
-            client.BaseAddress = new Uri("https://localhost:44322/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                                new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage response = client.PostAsJsonAsync(ApiUrl, input).Result;
-            object kq = null;
-            if (response.IsSuccessStatusCode)
-            {
-                kq = response.Content.ReadFromJsonAsync<object>().Result;
-            }
-            return kq;
-        }
-
         public static T SendDataRequest<T>(string ApiUrl, object input = null)
         {
             //var thanhvien = HttpContext.Session.Get<ThanhVienModel.Output.ThongTinThanhVien>("ThanhVien");
             var thanhvien = AppContext.Current.Session.Get<MemberModel.Output.MemberInfo>("Member");
             var nhanvien = AppContext.Current.Session.Get<UserModel.Output.UserInfo>("User");
             HttpClient client = new();
-            client.BaseAddress = new Uri("https://localhost:5001");
+            client.BaseAddress = new Uri(SystemConstants.AppSetting.BaseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
             if (thanhvien != null)
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", thanhvien.AccessToken);

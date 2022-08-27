@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
 <ul class="breadcrumb">
     <li><a href="index.html">Home</a> <span class="divider">/</span></li>
     <li class="active"> SHOPPING CART</li>
@@ -39,7 +41,7 @@ else
 
                     var item = Model.CartItems[i];
                     <tr>
-                        <td> <img width="60" src="@("https://localhost:5001" + item.Image)" alt="" /></td>
+                        <td> <img width="60" src="@(Configuration["BaseAddress"] + item.Image)" alt="" /></td>
                         <td>@item.Description</td>
                         <td>
                             @item.Quantity

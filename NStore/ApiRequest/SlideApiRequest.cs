@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace NStore.ApiRequest
 {
@@ -19,7 +20,7 @@ namespace NStore.ApiRequest
             var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
-            client.BaseAddress = new Uri("https://localhost:5001");
+            client.BaseAddress = new Uri(SystemConstants.AppSetting.BaseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
             if (thanhvien != null)
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", thanhvien.AccessToken);
@@ -58,7 +59,7 @@ namespace NStore.ApiRequest
             var nhanvien = Common.AppContext.Current.Session.Get<UserModel.Output.UserInfo>("NhanVien");
 
             HttpClient client = new();
-            client.BaseAddress = new Uri("https://localhost:5001");
+            client.BaseAddress = new Uri(SystemConstants.AppSetting.BaseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
             if (thanhvien != null)
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", thanhvien.AccessToken);

@@ -84,7 +84,6 @@ namespace Service.Models
                 entity.Property(e => e.Name).HasMaxLength(100);
 
                 entity.Property(e => e.Password)
-                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
 

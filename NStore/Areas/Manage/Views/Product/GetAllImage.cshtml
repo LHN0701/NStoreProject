@@ -7,10 +7,12 @@
     var productId = model[0].ProductId;
 }
 
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
 <div class="container-fluid px-4">
     <h1 class="mt-4">List Image</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Home page</a></li>
+        <li class="breadcrumb-item"><a href="/Manage">Home page</a></li>
         <li class="breadcrumb-item active">List Image</li>
     </ol>
 
@@ -18,6 +20,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-dark" asp-action="Index" asp-controller="Product" method="GET">Return</a>
                     <a class="btn btn-success" asp-action="AddImage" asp-controller="Product" asp-route-productId="@productId" method="GET">Create</a>
                 </div>
             </div>
@@ -64,8 +67,8 @@
                                     <span>
                                         <div class="col-sm-7 col-md-9">
                                             <input asp-for="@item.Id" type="hidden" />
-                                            <a href="@("https://localhost:5001" + item.ImagePath)" title="@item.ProductName">
-                                                <img src="@("https://localhost:5001" + item.ImagePath)" id="imgThumbnail" class="img-responsive" style="margin-top: 5px; width: 200px; height: auto;" />
+                                            <a href="@(Configuration["BaseAddress"] + item.ImagePath)" title="@item.ProductName">
+                                                <img src="@(Configuration["BaseAddress"] + item.ImagePath)" id="imgThumbnail" class="img-responsive" style="margin-top: 5px; width: 200px; height: 200px;" />
                                             </a>
                                         </div>
                                     </span>
@@ -74,12 +77,12 @@
                                 <td data-title="Kích hoạt"><span>@item.DateCreated</span></td>
                                 <td data-title="">
                                     <span>
-                                        <a asp-area="Manage" asp-controller="Product" asp-action="UpdateImage" asp-route-imageId="@item.Id" title="Cập nhật Slide Banner">
+                                        <a asp-area="Manage" asp-controller="Product" asp-action="UpdateImage" asp-route-imageId="@item.Id" title="Update image">
                                             <i class="fa fa-bars" aria-hidden="true" style="font-size: 16px; margin-right: 20px"></i>
                                         </a>
                                     </span>
                                     <span>
-                                        <a asp-area="Manage" asp-controller="Product" asp-action="DeleteImage" asp-route-imageId="@item.Id" onclick="return DeleteComfirm(event);" title="Xóa Slide Banner">
+                                        <a asp-area="Manage" asp-controller="Product" asp-action="DeleteImage" asp-route-imageId="@item.Id" onclick="return DeleteComfirm(event);" title="Delete image">
                                             <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px;"></i>
                                         </a>
                                     </span>
@@ -90,7 +93,7 @@
                 }
                 else
                 {
-                    <div style="font-size: 1em; color: #ff0000;">Chưa có Slide Banner</div>
+                    <div style="font-size: 1em; color: #ff0000;">have not image</div>
                 }
             </table>
         </div>

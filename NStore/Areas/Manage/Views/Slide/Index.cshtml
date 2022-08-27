@@ -4,10 +4,12 @@
     Layout = "~/Areas/Manage/Views/Shared/_LayoutBackend.cshtml";
 }
 
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
 <div class="container-fluid px-4">
     <h1 class="mt-4">List Slide</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Home page</a></li>
+        <li class="breadcrumb-item"><a href="/Manage">Home page</a></li>
         <li class="breadcrumb-item active">List Slide</li>
     </ol>
 
@@ -32,16 +34,16 @@
                 <thead>
                     <tr>
                         <th>
-                            STT
+                            Serie
                         </th>
                         <th>
-                            Hình
+                            Image
                         </th>
                         <th>
-                            Liên Kết
+                            Link
                         </th>
                         <th>
-                            Kích Hoạt
+                            Active
                         </th>
                         <th></th>
                     </tr>
@@ -55,27 +57,27 @@
                         {
                             stt++;
                             <tr>
-                                <td data-title="STT"><span>@stt</span></td>
-                                <td data-title="Hình">
+                                <td data-title="Serie"><span>@stt</span></td>
+                                <td data-title="Image">
                                     <span>
                                         <div class="col-sm-7 col-md-9">
                                             <input asp-for="@item.Id" type="hidden" />
-                                            <a href="@("https://localhost:5001" + item.Picture)" title="@item.Name">
-                                                <img src="@("https://localhost:5001" + item.Picture)" id="imgThumbnail" class="img-responsive" style="margin-top: 5px; width: 200px; height: auto;" />
+                                            <a href="@(Configuration["BaseAddress"] + item.Picture)" title="@item.Name">
+                                                <img src="@(Configuration["BaseAddress"] + item.Picture)" id="imgThumbnail" class="img-responsive" style="margin-top: 5px; width: 200px; height: auto;" />
                                             </a>
                                         </div>
                                     </span>
                                 </td>
-                                <td data-title="Liên kết"><span>@item.Url</span></td>
-                                <td data-title="Kích hoạt"><span>@item.Active</span></td>
+                                <td data-title="Link"><span>@item.Url</span></td>
+                                <td data-title="Active"><span>@item.Active</span></td>
                                 <td data-title="">
                                     <span>
-                                        <a asp-area="Manage" asp-controller="Slide" asp-action="UpdateSlide" asp-route-id="@item.Id" title="Cập nhật Slide Banner">
+                                        <a asp-area="Manage" asp-controller="Slide" asp-action="UpdateSlide" asp-route-id="@item.Id" title="Update Slide Banner">
                                             <i class="fa fa-bars" aria-hidden="true" style="font-size: 16px; margin-right: 20px"></i>
                                         </a>
                                     </span>
                                     <span>
-                                        <a asp-area="Manage" asp-controller="Slide" asp-action="DeleteSlide" asp-route-id="@item.Id" onclick="return DeleteComfirm(event);" title="Xóa Slide Banner">
+                                        <a asp-area="Manage" asp-controller="Slide" asp-action="DeleteSlide" asp-route-id="@item.Id" onclick="return DeleteComfirm(event);" title="Delete Slide Banner">
                                             <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px;"></i>
                                         </a>
                                     </span>

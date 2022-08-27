@@ -4,10 +4,12 @@
     Layout = "~/Areas/Manage/Views/Shared/_LayoutBackend.cshtml";
 }
 
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
 <div class="container-fluid px-4">
     <h1 class="mt-4">List product</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Home page</a></li>
+        <li class="breadcrumb-item"><a href="/Manage">Home page</a></li>
         <li class="breadcrumb-item active">List product</li>
     </ol>
 
@@ -50,22 +52,22 @@
                 <thead>
                     <tr>
                         <th>
-                            Mã SP
+                            Code Product
                         </th>
                         <th>
-                            Ảnh
+                            Image
                         </th>
                         <th>
-                            Tên
+                            Name
                         </th>
                         <th>
-                            Giá Gốc
+                            Original Price
                         </th>
                         <th>
-                            Giá
+                            Price
                         </th>
                         <th>
-                            Số lượng tồn
+                            Stock
                         </th>
                         <th></th>
                     </tr>
@@ -78,8 +80,8 @@
                                 @Html.DisplayFor(modelItem => item.Id)
                             </td>
                             <td>
-                                <a href="@("https://localhost:5001" + item.ImagePath)" title="@item.Name">
-                                    <img src="@("https://localhost:5001" + item.ImagePath)" id="imgThumbnail" class="img-responsive" style="width: 200px; height: 150px;" />
+                                <a href="@(Configuration["BaseAddress"] + item.ImagePath)" title="@item.Name">
+                                    <img src="@(Configuration["BaseAddress"] + item.ImagePath)" id="imgThumbnail" class="img-responsive" style="width: 200px; height: 150px;" />
                                 </a>
                             </td>
                             <td>

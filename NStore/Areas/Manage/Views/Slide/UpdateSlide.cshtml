@@ -27,7 +27,7 @@
 <div class="container-fluid">
     <h1 class="mt-4">Update Slide</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Home Page</a></li>
+        <li class="breadcrumb-item"><a href="/Manage">Home Page</a></li>
         <li class="breadcrumb-item active">Update Slide</li>
     </ol>
     <div class="card mb-4">
@@ -58,8 +58,8 @@
                             <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
                             <div class="col-sm-7 col-md-9">
                                 <input asp-for="Id" type="hidden" />
-                                <a href="@("https://localhost:5001" + Model.Picture)" title="@Model.Name">
-                                    <img src="@("https://localhost:5001" + Model.Picture)" id="imgThumbnail" class="img-responsive" style="margin-top: 5px; width: 200px; height: auto;" />
+                                <a href="@(Configuration["BaseAddress"] + Model.Picture)" title="@Model.Name">
+                                    <img src="@(Configuration["BaseAddress"] + Model.Picture)" id="imgThumbnail" class="img-responsive" style="margin-top: 5px; width: 200px; height: auto;" />
                                 </a>
                             </div>
                         </div>

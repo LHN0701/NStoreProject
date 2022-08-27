@@ -42,10 +42,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-@*facebook login*@
-<div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v14.0" nonce="RPdVa8XV"></script>
-
 @*google login*@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <div id="g_id_onload"
@@ -108,7 +104,10 @@
                 <div class="form-group container_swap">
                     <div class="social-icon div_left">
 
-                        <button type="button" onclick="facebookLogin()"><i class="fa fa-facebook"></i> @*<i class="fa-brands fa-facebook-f"></i>*@</button>
+                        <button data-scope="public_profile,email" id="loginFacebook" type="button" onclick="facebookLogin()"><i class="fa fa-facebook"></i></button>
+                        @*<fb:login-button scope="public_profile,email"
+                                             onlogin="facebookLogin();">
+                            </fb:login-button>*@
                     </div>
 
                     <div class="g_id_signin div_right"
@@ -169,7 +168,7 @@
                         AccountFrom: "Facebook"
                     },
                     success: function (res) {
-                        window.location.href = "/Member/AnonymousSuccess";
+                        window.location.href = "/Home";
                     },
                     error: function (err) {
                         window.location.href = "/Member/AnonymousFail";
@@ -212,7 +211,7 @@
                 AccountFrom: "Google"
             },
             success: function (res) {
-                window.location.href = "/Member/AnonymousSuccess";
+                window.location.href = "/Home";
             },
             error: function (err) {
                 window.location.href = "/Member/AnonymousFail";

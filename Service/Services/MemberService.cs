@@ -48,7 +48,7 @@ namespace Service.Services
             {
                 return new MemberModel.Output.MemberInfo()
                 {
-                    Noteti = "Tài khoản đã tồn tại"
+                    Noteti = "Email already exist!"
                 };
             }
 
@@ -56,7 +56,7 @@ namespace Service.Services
             {
                 return new MemberModel.Output.MemberInfo()
                 {
-                    Noteti = "Date of birth must be greater than 01/01/1900"
+                    Noteti = "Date of birth must be greater than 01/01/1900!"
                 };
             }
 
@@ -86,7 +86,7 @@ namespace Service.Services
 
             return new MemberModel.Output.MemberInfo()
             {
-                Noteti = "Tạo tài khoản thất bại"
+                Noteti = "Create account fail!"
             };
         }
 
@@ -100,7 +100,7 @@ namespace Service.Services
                 _context.SaveChanges();
 
                 noteti.IsSuccess = true;
-                noteti.Noteti = "Active email success";
+                noteti.Noteti = "Active email success!";
             }
             return noteti;
         }
@@ -111,7 +111,7 @@ namespace Service.Services
             var member = _context.Members.FirstOrDefault(x => x.Email.Equals(email));
             if (member == null)
             {
-                noteti.Noteti = "Can not find email";
+                noteti.Noteti = "Can not find email!";
                 noteti.IsSuccess = false;
 
                 return noteti;
@@ -123,11 +123,11 @@ namespace Service.Services
 
         public Member AnonymousLogin(MemberModel.Input.AnonymousLogin input)
         {
-            var member = _context.Members.FirstOrDefault(x => x.Email.Equals(input.Email));
+            var member = _context.Members.FirstOrDefault(x => x.Email.Equals(input.Email) && x.AccountFrom.Equals(input.AccountFrom));
 
             if (member != null)
             {
-                return null;
+                return member;
             }
 
             var user = new Member()
@@ -137,7 +137,7 @@ namespace Service.Services
                 Email = input.Email,
                 Phone = null,
                 Gender = null,
-                Password = Utilities.RandomPassword(),
+                Password = null,
                 Address = null,
                 Active = true,
                 AccountFrom = input.AccountFrom,
@@ -167,18 +167,18 @@ namespace Service.Services
                         if (change > 0)
                         {
                             result.IsSuccess = true;
-                            result.Noteti = "Change password Success";
+                            result.Noteti = "Change password Success!";
                         }
                         else
                         {
                             result.IsSuccess = false;
-                            result.Noteti = "Change password incorrect";
+                            result.Noteti = "Change password incorrect!";
                         }
                     }
                     else
                     {
                         result.IsSuccess = false;
-                        result.Noteti = "Old Password incorrect";
+                        result.Noteti = "Old Password incorrect!";
                     }
                 }
             }

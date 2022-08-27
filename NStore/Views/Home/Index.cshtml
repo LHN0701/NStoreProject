@@ -4,6 +4,9 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
 <style>
     /*#oneline {
             white-space: nowrap;
@@ -61,12 +64,13 @@
                     var slide = Model.Slides[index];
                     <div class="item @(index == 0?"active":"")">
                         <div class="container">
-                            <a href="@slide.Url"><img style="width:100%" src="@("https://localhost:5001" + slide.Picture)" alt="@slide.Name" /></a>
+                            <a href="@slide.Url"><img style="width:100%" src="@(Configuration["BaseAddress"] + slide.Picture)" alt="@slide.Name" /></a>
                             <div class="carousel-caption" id="oneline">
                                 <h4>@slide.Name</h4>
                             </div>
                         </div>
-                    </div>}
+                    </div>
+                }
             </div>
             <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
             <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
@@ -106,7 +110,7 @@
                                 <li class="span3">
                                     <div id="imageParent" class="thumbnail">
                                         <i class="tag"></i>
-                                        <a href="@("Product/Detail?productId=" + item.Id)"><img id="image" src="@("https://localhost:5001" + item.ImagePath)" alt="@item.Name"></a>
+                                        <a href="@("Product/Detail?productId=" + item.Id)"><img id="image" src="@(Configuration["BaseAddress"] + item.ImagePath)" alt="@item.Name"></a>
                                         <div class="caption">
                                             <h5 id="twoline"><a href="@("Product/Detail?productId=" + item.Id)">@item.Name</a></h5>
                                             <h4><a class="btn" href="@("Product/Detail?productId=" + item.Id)">VIEW</a> <span class="pull-right">$ @item.Price.ToString()</span></h4>
@@ -130,7 +134,7 @@
     {
         <li class="span3">
             <div class="thumbnail">
-                <a href="@("Product/Detail?productId=" + item.Id)"><img id="image" src="@("https://localhost:5001" + item.ImagePath)" alt="@item.Name" /></a>
+                <a href="@("Product/Detail?productId=" + item.Id)"><img id="image" src="@(Configuration["BaseAddress"] + item.ImagePath)" alt="@item.Name" /></a>
                 <div class="caption">
                     <h5 id="twoline"><a href="@("Product/Detail?productId=" + item.Id)">@item.Name</a></h5>
                     @*<p id="oneline">
